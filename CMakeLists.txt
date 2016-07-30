@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12)
-project(HelloMagnum)
+project(EO)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/")
 
@@ -20,16 +20,16 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/configure.h.cmake
 
 corrade_add_resource(CameraView_RESOURCES res/resources.conf)
 
-add_executable(HelloMagnum
+add_executable(EO
   src/App.cpp
   src/CameraViewShader.cpp
   src/CameraView.cpp
   src/FlyCaptureCamera.cpp
   ${CameraView_RESOURCES})
 
-target_include_directories(HelloMagnum PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(EO PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
-target_link_libraries(HelloMagnum
+target_link_libraries(EO
   ${FlyCapture2_LIBRARIES}
   ${OpenCV_LIBS}
   Magnum::Application
@@ -39,6 +39,6 @@ target_link_libraries(HelloMagnum
   Magnum::MeshTools)
 
 add_custom_target(Run COMMAND
-  HelloMagnum DEPENDS
-  HelloMagnum WORKING_DIRECTORY
+  EO DEPENDS
+  EO WORKING_DIRECTORY
   ${CMAKE_PROJECT_DIR} )
