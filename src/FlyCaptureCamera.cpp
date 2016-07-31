@@ -2,6 +2,9 @@
 #include <iostream>
 
 FlyCaptureCamera::~FlyCaptureCamera() {
+  if (!camera.IsConnected()) {
+    return;
+  }
   std::cout << "disconnecting camera.." << std::endl;
   FlyCapture2::Error error = camera.StopCapture();
   if (error != FlyCapture2::PGRERROR_OK) {
@@ -43,7 +46,7 @@ void FlyCaptureCamera::setup() {
 void FlyCaptureCamera::update() {
   FlyCapture2::Error error = camera.RetrieveBuffer(&rawImage);
   if (error != FlyCapture2::PGRERROR_OK) {
-    std::cout << "capture error" << std::endl;
+    // std::cout << "capture error" << std::endl;
   }
 }
 
