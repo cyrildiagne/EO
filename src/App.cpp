@@ -1,4 +1,3 @@
-#include <iomanip>
 #include <iostream>
 #include <sstream>
 
@@ -7,6 +6,8 @@
 #include <Magnum/Renderer.h>
 #include <Magnum/Timeline.h>
 
+#include "BallMan.h"
+#include "BallTracker.h"
 #include "CameraView.h"
 #include "FlyCaptureCamera.h"
 #include "Label.h"
@@ -21,12 +22,12 @@ private:
   void tickEvent() override;
   void drawEvent() override;
   void mouseMoveEvent(MouseMoveEvent &event) override;
+  void keyPressEvent(KeyEvent &event) override;
   Label fpsView;
   Timeline timeline;
-  // camera view
   CameraView cameraView;
-  // flycapture camera
   FlyCaptureCamera fcCamera;
+  BallTracker ballTracker;
 };
 
 App::App(const Arguments &arguments)
@@ -38,6 +39,8 @@ App::App(const Arguments &arguments)
   fcCamera.setup();
   // camera view
   cameraView.setup();
+  // ball tracker
+  ballTracker.setup();
   // enable alpha blending
   Renderer::enable(Renderer::Feature::Blending);
   Renderer::setBlendFunction(Renderer::BlendFunction::SourceAlpha,
@@ -52,6 +55,7 @@ App::App(const Arguments &arguments)
 void App::tickEvent() {
   // update camera
   fcCamera.update();
+  ballTracker.update(fcCamera.getCvMat());
   // update framerate label
   const float fps = 1.0f / timeline.previousFrameDuration();
   std::ostringstream text;
@@ -66,6 +70,11 @@ void App::drawEvent() {
   cameraView.updateTexture(fcCamera.rawImage);
   cameraView.draw();
   fpsView.draw();
+  // draw ballmen
+  for (size_t i = 0; i < ballTracker.circles.size(); i++) {
+    Circle c = ballTracker.circles[i];
+    BallMan::draw(c.x, c.y, c.radius);
+  }
   // swap buffers
   swapBuffers();
   // call next draw
@@ -74,5 +83,13 @@ void App::drawEvent() {
 }
 
 void App::mouseMoveEvent(MouseMoveEvent &event) { (void)event; }
+
+void App::keyPressEvent(KeyEvent &event) {
+  if (event.key() == KeyEvent::Key::S) {
+    // save image
+    fcCamera.saveImage(0.5);
+  };
+  event.setAccepted(true);
+}
 
 MAGNUM_APPLICATION_MAIN(App)

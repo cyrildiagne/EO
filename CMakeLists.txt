@@ -23,6 +23,7 @@ add_executable(EO
   src/CameraViewShader.cpp
   src/CameraView.cpp
   src/FlyCaptureCamera.cpp
+  src/BallTracker.cpp
   src/Label.cpp
   ${CameraView_RESOURCES})
 
