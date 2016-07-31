@@ -9,6 +9,7 @@ public:
   ~FlyCaptureCamera();
   void setup();
   void update();
+  void saveImage(float scale);
   cv::Mat getCvMat();
   FlyCapture2::Image rawImage;
 

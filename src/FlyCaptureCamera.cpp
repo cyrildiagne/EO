@@ -1,5 +1,11 @@
 #include "FlyCaptureCamera.h"
+#include <chrono>
+#include <ctime>
+#include <iomanip>
 #include <iostream>
+
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 FlyCaptureCamera::~FlyCaptureCamera() {
   if (!camera.IsConnected()) {
@@ -48,6 +54,22 @@ void FlyCaptureCamera::update() {
   if (error != FlyCapture2::PGRERROR_OK) {
     // std::cout << "capture error" << std::endl;
   }
+}
+
+void FlyCaptureCamera::saveImage(float scale) {
+  cv::Mat currentFrame = getCvMat().clone();
+  cv::Mat resizedFrame;
+  resizedFrame.create(currentFrame.rows * scale, currentFrame.cols * scale,
+                      CV_8UC3);
+  cv::resize(currentFrame, resizedFrame, resizedFrame.size(), 0, 0,
+             cv::INTER_AREA);
+  // retrieve current time
+  time_t now = time(NULL);
+  struct tm tstruct;
+  char buf[40];
+  tstruct = *localtime(&now);
+  strftime(buf, sizeof(buf), "%H-%M-%S", &tstruct);
+  cv::imwrite("export/" + std::string{buf} + ".jpg", resizedFrame);
 }
 
 cv::Mat FlyCaptureCamera::getCvMat() {
