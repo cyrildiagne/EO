@@ -5,15 +5,13 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/")
 
 add_subdirectory(libs/corrade)
 add_subdirectory(libs/magnum)
+add_subdirectory(libs/magnum-plugins)
 
 find_package(FlyCapture2 REQUIRED)
 find_package(OpenCV REQUIRED )
 find_package(Magnum REQUIRED Sdl2Application)
 
 set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
-
-#set(MAGNUM_PLUGINS_IMPORTER_DEBUG_DIR, ../libs/magnum/src/MagnumPlugins)
-#set(MAGNUM_PLUGINS_IMPORTER_DIR, ../libs/magnum/src/MagnumPlugins)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/configure.h.cmake
                ${CMAKE_CURRENT_BINARY_DIR}/configure.h)
@@ -25,6 +23,7 @@ add_executable(EO
   src/CameraViewShader.cpp
   src/CameraView.cpp
   src/FlyCaptureCamera.cpp
+  src/Label.cpp
   ${CameraView_RESOURCES})
 
 target_include_directories(EO PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
@@ -36,7 +35,8 @@ target_link_libraries(EO
   Magnum::Magnum
   Magnum::Shaders
   Magnum::Primitives
-  Magnum::MeshTools)
+  Magnum::MeshTools
+  Magnum::Text)
 
 add_custom_target(Run COMMAND
   EO DEPENDS

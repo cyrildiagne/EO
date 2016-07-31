@@ -24,7 +24,10 @@
 */
 
 #ifdef CORRADE_IS_DEBUG_BUILD
-#define MAGNUM_PLUGINS_IMPORTER_DIR "./libs/magnum/src/MagnumPlugins/TgaImporter"
 #else
-#define MAGNUM_PLUGINS_IMPORTER_DIR "./libs/magnum/src/MagnumPlugins/TgaImporter"
 #endif
+
+#define MAGNUM_PLUGINS_IMPORTER_DIR \
+  "./libs/magnum/src/MagnumPlugins/TgaImporter"
+#define MAGNUM_PLUGINS_FONT_DIR \
+  "./libs/magnum-plugins/src/MagnumPlugins/FreeTypeFont"

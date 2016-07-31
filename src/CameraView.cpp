@@ -58,7 +58,7 @@ void CameraView::loadTexture() {
   if (!importer)
     std::exit(1);
   // load texture
-  const Utility::Resource rs{"camera-view"};
+  const Utility::Resource rs{"assets"};
   if (!importer->openData(rs.getRaw("stone.tga")))
     std::exit(2);
   // retrieve parsed ImageData from importer

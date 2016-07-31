@@ -8,7 +8,7 @@
 CameraViewShader::CameraViewShader() {
   MAGNUM_ASSERT_VERSION_SUPPORTED(Version::GL330);
 
-  const Utility::Resource rs{"camera-view"};
+  const Utility::Resource rs{"assets"};
 
   Shader vert{Version::GL330, Shader::Type::Vertex};
   Shader frag{Version::GL330, Shader::Type::Fragment};
