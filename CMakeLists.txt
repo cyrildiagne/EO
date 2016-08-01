@@ -10,6 +10,7 @@ add_subdirectory(libs/magnum-plugins)
 find_package(FlyCapture2 REQUIRED)
 find_package(OpenCV REQUIRED )
 find_package(Magnum REQUIRED Sdl2Application)
+find_package(MagnumPlugins REQUIRED FreeTypeFont)
 
 set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
@@ -25,6 +26,7 @@ add_executable(EO
   src/FlyCaptureCamera.cpp
   src/BallTracker.cpp
   src/Label.cpp
+  src/Leg.cpp
   ${CameraView_RESOURCES})
 
 target_include_directories(EO PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
@@ -39,7 +41,8 @@ target_link_libraries(EO
   Magnum::MeshTools
   Magnum::Text)
 
-add_custom_target(Run COMMAND
-  EO DEPENDS
-  EO WORKING_DIRECTORY
-  ${CMAKE_PROJECT_DIR} )
+add_custom_target(Run
+  COMMAND EO
+  DEPENDS EO
+  DEPENDS FreeTypeFont
+  WORKING_DIRECTORY ${CMAKE_PROJECT_DIR} )
