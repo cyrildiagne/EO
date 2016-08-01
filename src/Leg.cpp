@@ -8,12 +8,9 @@ Leg::Leg() : gravity(0.0), segmentLength(5) {}
 
 void Leg::setup(int numSegments) {
   pts.push_back(VerletPoint(true));
-  // mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
 
   for (int i = 0; i < numSegments; i++) {
     pts.push_back(VerletPoint());
-    // mesh.addVertex(ofVec2f());
-    // mesh.addIndex(mesh.getNumVertices() - 1);
   }
 }
 
