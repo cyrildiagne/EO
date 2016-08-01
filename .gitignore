@@ -1,2 +1,3 @@
 libs
 .clang_complete
+*.pch
