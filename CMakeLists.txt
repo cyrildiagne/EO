@@ -26,6 +26,7 @@ add_executable(EO
   src/FlyCaptureCamera.cpp
   src/BallTracker.cpp
   src/Label.cpp
+  src/BallMan.cpp
   src/Leg.cpp
   ${CameraView_RESOURCES})
 

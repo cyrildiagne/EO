@@ -1,6 +1,7 @@
 #ifndef Leg_h
 #define Leg_h
 
+#include "BallManShader.h"
 #include <Magnum/Buffer.h>
 #include <Magnum/Math/Vector2.h>
 #include <Magnum/Mesh.h>
@@ -32,9 +33,9 @@ private:
   void applyUnitaryVerletIntegration(VerletPoint &p, float t);
   void applyUnitaryDistanceRelaxation(VerletPoint &p, const VerletPoint &from);
 
-  Shaders::Flat2D shader;
   Buffer buffer;
   Mesh mesh;
+  Shaders::Flat2D shader;
 };
 
 #endif /* end of include guard: Leg_h */

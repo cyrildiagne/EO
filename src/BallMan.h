@@ -7,46 +7,28 @@
 #include <Magnum/MeshTools/Compile.h>
 #include <Magnum/MeshTools/Interleave.h>
 #include <Magnum/Primitives/Circle.h>
-#include <Magnum/Shaders/Flat.h>
 #include <Magnum/Trade/MeshData2D.h>
 
+#include "BallManShader.h"
 #include "Leg.h"
 
 using namespace Magnum;
 
 class BallMan {
 public:
-  void setup() {
-    std::tie(mesh, vertices, indices) = MeshTools::compile(
-        Primitives::Circle::wireframe(16), BufferUsage::StaticDraw);
-    leg.setup();
-  }
-  void update(Vector2 p, double radius, float t) {
-    leg.update(p, t);
-    // retrieve viewport size
-    Vector2i size = defaultFramebuffer.viewport().size();
-    // update transform
-    transform = Matrix3::translation(
-                    Vector2(p.x() / size.x() * 2, -p.y() / size.y() * 2)) *
-                Matrix3::scaling(Vector2(radius / size.x(), radius / size.y()));
-  }
-  void draw() {
-    // retrieve projection matrix
-    Vector2i size = defaultFramebuffer.viewport().size();
-    Matrix3 projection = Matrix3::scaling(Vector2::yScale(size.aspectRatio()));
-    shader.setTransformationProjectionMatrix(projection * transform)
-        .setColor(Color3::red());
-    // draw circle
-    mesh.draw(shader);
-    leg.draw();
-  }
+  void setup();
+  void update(Vector2 p, float radius, float t);
+  void draw();
 
 private:
   Mesh mesh;
   std::unique_ptr<Buffer> vertices, indices;
-  Shaders::Flat2D shader;
+  BallManShader shader;
   Matrix3 transform;
-  Leg leg;
+  Leg leftArm;
+  Leg rightArm;
+  Leg leftLeg;
+  Leg rightLeg;
 };
 
 #endif /* end of include guard: BallMan_h */

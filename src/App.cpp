@@ -75,10 +75,11 @@ void App::tickEvent() {
     Vector2i size = defaultFramebuffer.viewport().size();
     float x = mouse.x() - size.x() * 0.5;
     float y = mouse.y() - size.y() * 0.5;
-    ballTracker.circles.push_back(Circle(x, y, 200));
+    ballTracker.circles.push_back(Circle(x, y, 100));
   }
-  Circle c = ballTracker.circles[0];
-  ballman.update(Vector2{c.x, c.y}, c.radius, ellapsedTime);
+  for (const Circle &c : ballTracker.circles) {
+    ballman.update(Vector2{c.x, c.y}, c.radius, ellapsedTime);
+  }
   // update framerate label
   const float fps = 1.0f / timeline.previousFrameDuration();
   std::ostringstream text;
@@ -98,7 +99,9 @@ void App::drawEvent() {
   }
   fpsView.draw();
   // draw ballmen
-  ballman.draw();
+  for (const Circle &c : ballTracker.circles) {
+    ballman.draw();
+  }
   // swap buffers
   swapBuffers();
   // call next draw

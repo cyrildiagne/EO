@@ -54,11 +54,11 @@ void BallTracker::update(const cv::Mat frame) {
     float radius;
     cv::Point2f center;
     cv::minEnclosingCircle(static_cast<cv::Mat>(contours[i]), center, radius);
-    if (radius < 15) {
+    if (radius < 10) {
       continue;
     }
     float cx = center.x - resizedFrame.cols * 0.5;
     float cy = center.y - resizedFrame.rows * 0.5;
-    circles.push_back(Circle{cx, cy, radius});
+    circles.push_back(Circle{-cx / scale, cy / scale, radius / scale});
   }
 }
