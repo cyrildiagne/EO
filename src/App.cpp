@@ -29,6 +29,7 @@ private:
   std::unique_ptr<FlyCaptureCamera> fcCamera;
   BallTracker ballTracker;
   Vector2i mouse;
+  BallMan ballman;
 };
 
 App::App(const Arguments &arguments)
@@ -45,6 +46,8 @@ App::App(const Arguments &arguments)
   cameraView.setup();
   // ball tracker
   ballTracker.setup();
+  // ballmen setup
+  ballman.setup();
   // enable alpha blending
   Renderer::enable(Renderer::Feature::Blending);
   Renderer::setBlendFunction(Renderer::BlendFunction::SourceAlpha,
@@ -63,14 +66,16 @@ void App::tickEvent() {
     if (fcCamera->hasNewImage()) {
       ballTracker.update(fcCamera->getCvMat());
     }
-    // use a mouse controlled circle if no camera is connected
   } else {
+    // use a mouse controlled circle if no camera is connected
     ballTracker.circles.clear();
     Vector2i size = defaultFramebuffer.viewport().size();
     float x = mouse.x() - size.x() * 0.5;
     float y = mouse.y() - size.y() * 0.5;
     ballTracker.circles.push_back(Circle(x, y, 200));
   }
+  Circle c = ballTracker.circles[0];
+  ballman.update(c.x, c.y, c.radius);
   // update framerate label
   const float fps = 1.0f / timeline.previousFrameDuration();
   std::ostringstream text;
@@ -90,10 +95,7 @@ void App::drawEvent() {
   }
   fpsView.draw();
   // draw ballmen
-  for (size_t i = 0; i < ballTracker.circles.size(); i++) {
-    Circle c = ballTracker.circles[i];
-    BallMan::draw(c.x, c.y, c.radius);
-  }
+  ballman.draw();
   // swap buffers
   swapBuffers();
   // call next draw

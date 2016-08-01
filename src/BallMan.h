@@ -8,29 +8,41 @@
 #include <Magnum/MeshTools/Interleave.h>
 #include <Magnum/Primitives/Circle.h>
 #include <Magnum/Shaders/Flat.h>
-#include <Magnum/Shaders/Flat.h>
 #include <Magnum/Trade/MeshData2D.h>
+
+#include "Leg.h"
 
 using namespace Magnum;
 
 class BallMan {
 public:
-  static void draw(double x, double y, double radius) {
+  void setup() {
+    std::tie(mesh, vertices, indices) = MeshTools::compile(
+        Primitives::Circle::wireframe(16), BufferUsage::StaticDraw);
+  }
+  void update(double x, double y, double radius) {
+    // retrieve viewport size
+    Vector2i size = defaultFramebuffer.viewport().size();
+    // update transformation
+    transformation =
+        Matrix3::translation(Vector2(x / size.x() * 2, -y / size.y() * 2)) *
+        Matrix3::scaling(Vector2(radius / size.x(), radius / size.y()));
+  }
+  void draw() {
     // retrieve projection matrix
     Vector2i size = defaultFramebuffer.viewport().size();
     Matrix3 projection = Matrix3::scaling(Vector2::yScale(size.aspectRatio()));
+    shader.setTransformationProjectionMatrix(projection * transformation)
+        .setColor(Color3::red());
     // draw circle
-    Matrix3 transformation =
-        Matrix3::translation(Vector2(x / size.x() * 2, -y / size.y() * 2)) *
-        Matrix3::scaling(Vector2(radius / size.x(), radius / size.y()));
-    // draw circle
-    std::get<0>(MeshTools::compile(Primitives::Circle::wireframe(16),
-                                   BufferUsage::StaticDraw))
-        .draw(
-            Shaders::Flat2D{}
-                .setTransformationProjectionMatrix(projection * transformation)
-                .setColor(Color3::red()));
+    mesh.draw(shader);
   }
+
+private:
+  Mesh mesh;
+  std::unique_ptr<Buffer> vertices, indices;
+  Shaders::Flat2D shader;
+  Matrix3 transformation;
 };
 
 #endif /* end of include guard: BallMan_h */
