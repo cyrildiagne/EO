@@ -21,20 +21,20 @@ FlyCaptureCamera::~FlyCaptureCamera() {
   std::cout << "Camera disconnected." << std::endl;
 }
 
-void FlyCaptureCamera::setup() {
+bool FlyCaptureCamera::setup() {
   FlyCapture2::Error error;
   // Connect the camera
   error = camera.Connect();
   if (error != FlyCapture2::PGRERROR_OK) {
     std::cout << "Failed to connect to camera" << std::endl;
-    return;
+    return false;
   }
   // Get the camera info and print it out
   FlyCapture2::CameraInfo camInfo;
   error = camera.GetCameraInfo(&camInfo);
   if (error != FlyCapture2::PGRERROR_OK) {
     std::cout << "Failed to get camera info from camera" << std::endl;
-    return;
+    return false;
   }
   std::cout << camInfo.vendorName << " " << camInfo.modelName << " "
             << camInfo.serialNumber << std::endl;
@@ -42,17 +42,21 @@ void FlyCaptureCamera::setup() {
   error = camera.StartCapture();
   if (error == FlyCapture2::PGRERROR_ISOCH_BANDWIDTH_EXCEEDED) {
     std::cout << "Bandwidth exceeded" << std::endl;
-    return;
+    return false;
   } else if (error != FlyCapture2::PGRERROR_OK) {
     std::cout << "Failed to start image capture" << std::endl;
-    return;
+    return false;
   }
+  return true;
 }
 
 void FlyCaptureCamera::update() {
+  isImageNew = false;
   FlyCapture2::Error error = camera.RetrieveBuffer(&rawImage);
   if (error != FlyCapture2::PGRERROR_OK) {
     // std::cout << "capture error" << std::endl;
+  } else {
+    isImageNew = true;
   }
 }
 
@@ -71,6 +75,8 @@ void FlyCaptureCamera::saveImage(float scale) {
   strftime(buf, sizeof(buf), "%H-%M-%S", &tstruct);
   cv::imwrite("export/" + std::string{buf} + ".jpg", resizedFrame);
 }
+
+const FlyCapture2::Image &FlyCaptureCamera::getRawImage() { return rawImage; }
 
 cv::Mat FlyCaptureCamera::getCvMat() {
   // convert to rgb

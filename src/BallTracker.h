@@ -5,6 +5,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 struct Circle {
+  Circle(float x, float y, float radius) : x(x), y(y), radius(radius) {}
   float x;
   float y;
   float radius;

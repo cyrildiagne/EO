@@ -26,17 +26,21 @@ private:
   Label fpsView;
   Timeline timeline;
   CameraView cameraView;
-  FlyCaptureCamera fcCamera;
+  std::unique_ptr<FlyCaptureCamera> fcCamera;
   BallTracker ballTracker;
+  Vector2i mouse;
 };
 
 App::App(const Arguments &arguments)
     : Platform::Application(
-          arguments,
-          Configuration().setTitle("EO beta").setSize({1280, 1024})) {
+          arguments, Configuration().setTitle("EO beta").setSize({1280, 1024})),
+      fcCamera(new FlyCaptureCamera) {
   fpsView.setup();
   // setup flycapture cam
-  fcCamera.setup();
+  bool isAvailable = fcCamera->setup();
+  if (!isAvailable) {
+    fcCamera = nullptr;
+  }
   // camera view
   cameraView.setup();
   // ball tracker
@@ -48,14 +52,25 @@ App::App(const Arguments &arguments)
   Renderer::setBlendEquation(Renderer::BlendEquation::Add,
                              Renderer::BlendEquation::Add);
   // limit framrate to 60hz
-  // setMinimalLoopPeriod(16);
+  setMinimalLoopPeriod(16);
   timeline.start();
 }
 
 void App::tickEvent() {
   // update camera
-  fcCamera.update();
-  ballTracker.update(fcCamera.getCvMat());
+  if (fcCamera) {
+    fcCamera->update();
+    if (fcCamera->hasNewImage()) {
+      ballTracker.update(fcCamera->getCvMat());
+    }
+    // use a mouse controlled circle if no camera is connected
+  } else {
+    ballTracker.circles.clear();
+    Vector2i size = defaultFramebuffer.viewport().size();
+    float x = mouse.x() - size.x() * 0.5;
+    float y = mouse.y() - size.y() * 0.5;
+    ballTracker.circles.push_back(Circle(x, y, 200));
+  }
   // update framerate label
   const float fps = 1.0f / timeline.previousFrameDuration();
   std::ostringstream text;
@@ -67,8 +82,12 @@ void App::drawEvent() {
   // update display
   defaultFramebuffer.clear(FramebufferClear::Color);
   // draw our content
-  cameraView.updateTexture(fcCamera.rawImage);
-  cameraView.draw();
+  if (fcCamera) {
+    if (fcCamera->hasNewImage()) {
+      cameraView.updateTexture(fcCamera->getRawImage());
+    }
+    cameraView.draw();
+  }
   fpsView.draw();
   // draw ballmen
   for (size_t i = 0; i < ballTracker.circles.size(); i++) {
@@ -82,12 +101,15 @@ void App::drawEvent() {
   timeline.nextFrame();
 }
 
-void App::mouseMoveEvent(MouseMoveEvent &event) { (void)event; }
+void App::mouseMoveEvent(MouseMoveEvent &event) {
+  mouse = event.position();
+  event.setAccepted();
+}
 
 void App::keyPressEvent(KeyEvent &event) {
   if (event.key() == KeyEvent::Key::S) {
     // save image
-    fcCamera.saveImage(0.5);
+    fcCamera->saveImage(0.5);
   };
   event.setAccepted(true);
 }

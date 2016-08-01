@@ -17,13 +17,12 @@ class BallMan {
 public:
   static void draw(double x, double y, double radius) {
     // retrieve projection matrix
-    Matrix3 projection = Matrix3::scaling(Vector2::yScale(
-        Vector2(defaultFramebuffer.viewport().size()).aspectRatio()));
+    Vector2i size = defaultFramebuffer.viewport().size();
+    Matrix3 projection = Matrix3::scaling(Vector2::yScale(size.aspectRatio()));
     // draw circle
-    float scale = 0.0065;
-    Matrix3 transformation = Matrix3::scaling(Vector2(scale, scale)) *
-                             Matrix3::translation(Vector2(-x, -y)) *
-                             Matrix3::scaling(Vector2(radius, radius));
+    Matrix3 transformation =
+        Matrix3::translation(Vector2(x / size.x() * 2, -y / size.y() * 2)) *
+        Matrix3::scaling(Vector2(radius / size.x(), radius / size.y()));
     // draw circle
     std::get<0>(MeshTools::compile(Primitives::Circle::wireframe(16),
                                    BufferUsage::StaticDraw))
