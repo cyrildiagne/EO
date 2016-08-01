@@ -8,7 +8,6 @@ Leg::Leg() : gravity(0.0), segmentLength(5) {}
 
 void Leg::setup(int numSegments) {
   pts.push_back(VerletPoint(true));
-
   for (int i = 0; i < numSegments; i++) {
     pts.push_back(VerletPoint());
   }
@@ -18,7 +17,6 @@ void Leg::update(Vector2 pos, float t) {
   origin = pos;
   pts[0].x() = origin.x();
   pts[0].y() = origin.y();
-
   // apply verlet integration
   Vector2 prev;
   for (auto &p : pts) {
@@ -29,7 +27,6 @@ void Leg::update(Vector2 pos, float t) {
     p.prev.x() = prev.x();
     p.prev.y() = prev.y();
   }
-
   // apply relaxation
   int relaxIterations = 10;
   for (int r = 0; r < relaxIterations; r++) {
@@ -75,10 +72,8 @@ void Leg::applyUnitaryVerletIntegration(VerletPoint &p, float t) {
 
 void Leg::applyUnitaryDistanceRelaxation(VerletPoint &p,
                                          const VerletPoint &from) {
-
   Vector2 d{p.x() - from.x(), p.y() - from.y()};
   float dstFrom = d.length();
-
   if (dstFrom > segmentLength && dstFrom != 0) {
     p -= (dstFrom - segmentLength) * (d / dstFrom) * 0.5;
   }
