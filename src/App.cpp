@@ -30,12 +30,14 @@ private:
   BallTracker ballTracker;
   Vector2i mouse;
   BallMan ballman;
+  float ellapsedTime;
 };
 
 App::App(const Arguments &arguments)
     : Platform::Application(
           arguments, Configuration().setTitle("EO beta").setSize({1280, 1024})),
       fcCamera(new FlyCaptureCamera) {
+  ellapsedTime = 0.f;
   fpsView.setup();
   // setup flycapture cam
   bool isAvailable = fcCamera->setup();
@@ -60,6 +62,7 @@ App::App(const Arguments &arguments)
 }
 
 void App::tickEvent() {
+  ellapsedTime += timeline.previousFrameDuration();
   // update camera
   if (fcCamera) {
     fcCamera->update();
@@ -75,7 +78,7 @@ void App::tickEvent() {
     ballTracker.circles.push_back(Circle(x, y, 200));
   }
   Circle c = ballTracker.circles[0];
-  ballman.update(c.x, c.y, c.radius);
+  ballman.update(Vector2{c.x, c.y}, c.radius, ellapsedTime);
   // update framerate label
   const float fps = 1.0f / timeline.previousFrameDuration();
   std::ostringstream text;
