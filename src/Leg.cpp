@@ -2,8 +2,6 @@
 
 #include "MagnumUtils.h"
 
-#define PI 3.14159265359
-
 Leg::Leg() : gravity(0.0), segmentLength(5) {}
 
 void Leg::setup(int numSegments) {
@@ -41,28 +39,12 @@ void Leg::update(Vector2 pos, float t) {
         applyUnitaryDistanceRelaxation(p, pts[i + 1]);
     }
   }
-}
-
-void Leg::draw() {
-  Vector2i size = defaultFramebuffer.viewport().size();
-  // copy points vector
-  std::vector<Vector2> data;
+  // update Line points
+  std::vector<Vector2> vpts(pts.size());
   for (size_t i = 0; i < pts.size(); i++) {
-    Vector2 p = Vector2(pts[i].x() / size.x() * 2, -pts[i].y() / size.y() * 2);
-    data.push_back(p);
+    vpts[i] = pts[i];
   }
-  // update buffers
-  buffer.setData(data, BufferUsage::DynamicDraw);
-  mesh.setPrimitive(MeshPrimitive::LineStrip)
-      .setCount(data.size())
-      .addVertexBuffer(buffer, 0, Shaders::Flat2D::Position());
-  // get projection
-  Matrix3 projection = Matrix3::scaling(Vector2::yScale(size.aspectRatio()));
-  // update shader
-  shader.setTransformationProjectionMatrix(projection)
-      .setColor(Color3(1.f, 1.f, 1.f));
-  // draw mesh
-  mesh.draw(shader);
+  setPoints(vpts);
 }
 
 void Leg::applyUnitaryVerletIntegration(VerletPoint &p, float t) {

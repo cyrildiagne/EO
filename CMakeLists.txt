@@ -28,6 +28,7 @@ add_executable(EO
   src/Label.cpp
   src/BallMan.cpp
   src/Leg.cpp
+  src/Line.cpp
   ${CameraView_RESOURCES})
 
 target_include_directories(EO PRIVATE ${CMAKE_CURRENT_BINARY_DIR})

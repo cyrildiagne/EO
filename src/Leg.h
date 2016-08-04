@@ -1,7 +1,7 @@
 #ifndef Leg_h
 #define Leg_h
 
-#include "BallManShader.h"
+#include "Line.h"
 #include <Magnum/Buffer.h>
 #include <Magnum/Math/Vector2.h>
 #include <Magnum/Mesh.h>
@@ -17,12 +17,11 @@ public:
   bool isPinned;
 };
 
-class Leg {
+class Leg : public Line {
 public:
   Leg();
   void setup(int numSegments = 15);
   void update(Vector2 pos, float t);
-  void draw();
 
 private:
   Vector2 origin;
@@ -32,10 +31,6 @@ private:
 
   void applyUnitaryVerletIntegration(VerletPoint &p, float t);
   void applyUnitaryDistanceRelaxation(VerletPoint &p, const VerletPoint &from);
-
-  Buffer buffer;
-  Mesh mesh;
-  Shaders::Flat2D shader;
 };
 
 #endif /* end of include guard: Leg_h */
