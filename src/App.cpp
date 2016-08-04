@@ -122,4 +122,7 @@ void App::keyPressEvent(KeyEvent &event) {
   event.setAccepted(true);
 }
 
-MAGNUM_APPLICATION_MAIN(App)
+int main(int argc, char **argv) {
+  App app({argc, argv});
+  return app.exec();
+}
