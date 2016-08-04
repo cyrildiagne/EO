@@ -12,12 +12,13 @@ using namespace Magnum;
 
 class Body : public Line {
 public:
-  void setup(int numSegments) {
+  void setup(float radius, int numSegments) {
     std::vector<Vector2> pts;
     const float PI = 3.14159265359;
     for (int i = 0; i < numSegments + 1; i++) {
       float pct = static_cast<float>(i) / numSegments;
-      pts.push_back(Vector2(cos(pct * PI * 2), sin(pct * PI * 2)));
+      pts.push_back(
+          Vector2(cos(pct * PI * 2) * radius, sin(pct * PI * 2) * radius));
     }
     setPoints(pts);
   }

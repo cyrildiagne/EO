@@ -6,7 +6,7 @@ using namespace Magnum;
 
 void BallMan::setup() {
   // setup body
-  body.setup(32);
+  body.setup(100, 32);
   // setup arms & legs
   leftArm.setup(20);
   rightArm.setup(20);
@@ -26,7 +26,6 @@ void BallMan::update(Vector2 p, float radius, float t) {
   rightLeg.update(rightLegOffset, t);
   // update body radius
   body.position = p;
-  body.scale = Vector2{radius};
 }
 
 void BallMan::draw() {

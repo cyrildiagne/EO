@@ -16,6 +16,7 @@ public:
   void setPoints(const std::vector<Vector2> &pts);
   void draw();
 
+  float thickness;
   Vector2 scale;
   Vector2 position;
 
