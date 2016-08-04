@@ -21,6 +21,7 @@ public:
   Vector2 position;
 
 private:
+  std::vector<Vector2> getRibbon(const std::vector<Vector2> &pts);
   Buffer buffer;
   Mesh mesh;
   Flat2D shader;
