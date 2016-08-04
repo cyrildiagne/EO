@@ -1,7 +1,6 @@
 #ifndef BallMan_h
 #define BallMan_h
 
-#include "BallManShader.h"
 #include "Body.h"
 #include "Leg.h"
 

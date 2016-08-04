@@ -6,7 +6,7 @@ using namespace Magnum;
 
 void BallMan::setup() {
   // setup body
-  body.setup(100, 32);
+  body.setup(100, 64);
   // setup arms & legs
   leftArm.setup(20);
   rightArm.setup(20);

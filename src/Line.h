@@ -1,14 +1,13 @@
 #ifndef Line_h
 #define Line_h
 
+#include "LineShader.h"
 #include <Magnum/Buffer.h>
 #include <Magnum/Math/Vector2.h>
 #include <Magnum/Mesh.h>
-#include <Magnum/Shaders/Flat.h>
 #include <memory>
 
 using namespace Magnum;
-using namespace Magnum::Shaders;
 
 class Line {
 public:
@@ -21,10 +20,10 @@ public:
   Vector2 position;
 
 private:
-  std::vector<Vector2> getRibbon(const std::vector<Vector2> &pts);
+  std::vector<Vector2> computeNormals(const std::vector<Vector2> &pts);
   Buffer buffer;
   Mesh mesh;
-  Flat2D shader;
+  LineShader shader;
 };
 
 #endif /* end of include guard: Line_h */
