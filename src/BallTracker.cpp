@@ -4,7 +4,7 @@
 void BallTracker::setup() {
   rescale = 0.25;
   minHue = 5;
-  maxHue = 120;
+  maxHue = 110;
   minSaturation = 0;
   maxSaturation = 255;
   minValue = 0;

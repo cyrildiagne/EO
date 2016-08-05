@@ -84,7 +84,8 @@ void App::tickEvent() {
   const float fps = 1.0f / timeline.previousFrameDuration();
   std::ostringstream text;
   text << Int(fps) << "fps" << std::endl
-       << "tracking: " << Int(ballTracker.getTrackTime()) << "ms";
+       << "tracking: " << Int(ballTracker.getTrackTime()) << "ms" << std::endl
+       << "thresh: " << ballTracker.minHue << "-" << ballTracker.maxHue;
   fpsView.setText(text.str());
 }
 
@@ -122,6 +123,14 @@ void App::keyPressEvent(KeyEvent &event) {
     fcCamera->saveImage(0.5);
   } else if (event.key() == KeyEvent::Key::Space) {
     ballTracker.setNextFrameId();
+  } else if (event.key() == KeyEvent::Key::Left) {
+    ballTracker.minHue -= 1;
+  } else if (event.key() == KeyEvent::Key::Right) {
+    ballTracker.minHue += 1;
+  } else if (event.key() == KeyEvent::Key::Down) {
+    ballTracker.maxHue -= 1;
+  } else if (event.key() == KeyEvent::Key::Up) {
+    ballTracker.maxHue += 1;
   }
   event.setAccepted(true);
 }
