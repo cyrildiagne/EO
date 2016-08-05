@@ -16,6 +16,7 @@ public:
   void draw();
 
   float thickness;
+  Color3 color;
   Vector2 scale;
   Vector2 position;
 
