@@ -42,7 +42,8 @@ void Leg::update(Vector2 pos, float t) {
   // update Line points
   std::vector<Vector2> vpts(pts.size());
   for (size_t i = 0; i < pts.size(); i++) {
-    vpts[i] = pts[i];
+    vpts[i].x() = pts[i].x() / scale.x();
+    vpts[i].y() = pts[i].y() / scale.y();
   }
   setPoints(vpts);
 }
@@ -56,7 +57,7 @@ void Leg::applyUnitaryDistanceRelaxation(VerletPoint &p,
                                          const VerletPoint &from) {
   Vector2 d{p.x() - from.x(), p.y() - from.y()};
   float dstFrom = d.length();
-  if (dstFrom > segmentLength && dstFrom != 0) {
-    p -= (dstFrom - segmentLength) * (d / dstFrom) * 0.5;
+  if (dstFrom > segmentLength * scale.x() && dstFrom != 0) {
+    p -= (dstFrom - segmentLength * scale.x()) * (d / dstFrom) * 0.5;
   }
 }
