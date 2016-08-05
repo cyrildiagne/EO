@@ -30,6 +30,7 @@ private:
   BallTracker ballTracker;
   Vector2i mouse;
   BallMan ballman;
+  bool debugMode;
   float ellapsedTime;
 };
 
@@ -38,6 +39,7 @@ App::App(const Arguments &arguments)
           arguments, Configuration().setTitle("EO beta").setSize({1280, 1024})),
       fcCamera(new FlyCaptureCamera) {
   ellapsedTime = 0.f;
+  debugMode = false;
   fpsView.setup();
   // setup flycapture cam
   bool isAvailable = fcCamera->setup();
@@ -81,12 +83,14 @@ void App::tickEvent() {
     ballman.update(Vector2{c.x, c.y}, c.radius, ellapsedTime);
   }
   // update framerate label
-  const float fps = 1.0f / timeline.previousFrameDuration();
-  std::ostringstream text;
-  text << Int(fps) << "fps" << std::endl
-       << "tracking: " << Int(ballTracker.getTrackTime()) << "ms" << std::endl
-       << "thresh: " << ballTracker.minHue << "-" << ballTracker.maxHue;
-  fpsView.setText(text.str());
+  if (debugMode) {
+    const float fps = 1.0f / timeline.previousFrameDuration();
+    std::ostringstream text;
+    text << Int(fps) << "fps" << std::endl
+         << "tracking: " << Int(ballTracker.getTrackTime()) << "ms" << std::endl
+         << "thresh: " << ballTracker.minHue << "-" << ballTracker.maxHue;
+    fpsView.setText(text.str());
+  }
 }
 
 void App::drawEvent() {
@@ -99,7 +103,10 @@ void App::drawEvent() {
     }
     MatView.draw();
   }
-  fpsView.draw();
+  // draw debug data
+  if (debugMode) {
+    fpsView.draw();
+  }
   // draw ballmen
   for (const Circle &c : ballTracker.circles) {
     (void)c;
@@ -123,6 +130,8 @@ void App::keyPressEvent(KeyEvent &event) {
     fcCamera->saveImage(0.5);
   } else if (event.key() == KeyEvent::Key::Space) {
     ballTracker.setNextFrameId();
+  } else if (event.key() == KeyEvent::Key::D) {
+    debugMode = !debugMode;
   } else if (event.key() == KeyEvent::Key::Left) {
     ballTracker.minHue -= 1;
   } else if (event.key() == KeyEvent::Key::Right) {
