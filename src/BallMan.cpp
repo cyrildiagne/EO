@@ -15,12 +15,12 @@ void BallMan::setup() {
 }
 
 void BallMan::update(Vector2 p, float radius, float t) {
+  float r = body.radius;
   // update arms
-  leftArm.update(Vector2(p.x() - radius, p.y()), t);
-  rightArm.update(Vector2(p.x() + radius, p.y()), t);
+  leftArm.update(Vector2(p.x() - r, p.y()), t);
+  rightArm.update(Vector2(p.x() + r, p.y()), t);
   // update legs
-  Vector2 legsOffset =
-      Matrix3::rotation(60.0_degf).transformVector({radius, 0});
+  Vector2 legsOffset = Matrix3::rotation(60.0_degf).transformVector({r, 0});
   leftLeg.update(p + legsOffset, t);
   Vector2 rightLegOffset{p.x() - legsOffset.x(), p.y() + legsOffset.y()};
   rightLeg.update(rightLegOffset, t);

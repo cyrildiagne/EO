@@ -15,6 +15,10 @@ class BallTracker {
 public:
   void setup();
   void update(const cv::Mat frame);
+  const cv::Mat &getImage();
   std::vector<Circle> circles;
+
+private:
+  cv::Mat currFrame;
 };
 #endif /* end of include guard: BallTracker_h */

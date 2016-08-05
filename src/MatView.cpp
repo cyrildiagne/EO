@@ -1,4 +1,4 @@
-#include "CameraView.h"
+#include "MatView.h"
 
 #include "configure.h"
 #include <Corrade/PluginManager/Manager.h>
@@ -15,7 +15,7 @@
 using namespace Magnum;
 using namespace Magnum::Primitives;
 
-void CameraView::setup() {
+void MatView::setup() {
   // setup mesh
   const Trade::MeshData2D square =
       Primitives::Square::solid(Square::TextureCoords::Generate);
@@ -24,19 +24,17 @@ void CameraView::setup() {
       BufferUsage::StaticDraw);
   mesh.setPrimitive(square.primitive())
       .setCount(square.positions(0).size())
-      .addVertexBuffer(buffer, 0, CameraViewShader::Position{},
-                       CameraViewShader::TextureCoordinates{});
+      .addVertexBuffer(buffer, 0, MatViewShader::Position{},
+                       MatViewShader::TextureCoordinates{});
 }
 
-void CameraView::updateTexture(const FlyCapture2::Image &fcImage) {
-  // convert to rgb
-  FlyCapture2::Image rgbImage;
-  fcImage.Convert(FlyCapture2::PIXEL_FORMAT_RGB, &rgbImage);
+void MatView::updateTexture(const cv::Mat img) {
   // retrieve image size
-  const Vector2i size(rgbImage.GetCols(), rgbImage.GetRows());
+  const Vector2i size(img.cols, img.rows);
   // copy data to magnum raw buffer
-  Containers::Array<char> data{rgbImage.GetDataSize()};
-  std::copy_n(rgbImage.GetData(), data.size(), data.begin());
+  std::size_t dataSize = img.cols * img.rows * 3;
+  Containers::Array<char> data{dataSize};
+  std::copy_n(img.ptr(), data.size(), data.begin());
   // retrieve parsed ImageData from flycapture image
   PixelStorage storage;
   Trade::ImageData2D image{storage, PixelFormat::RGB, PixelType::UnsignedByte,
@@ -49,7 +47,7 @@ void CameraView::updateTexture(const FlyCapture2::Image &fcImage) {
       .setSubImage(0, {}, image);
 }
 
-void CameraView::loadTexture() {
+void MatView::loadTexture() {
   // load the plugin
   PluginManager::Manager<Trade::AbstractImporter> manager{
       MAGNUM_PLUGINS_IMPORTER_DIR};
@@ -72,7 +70,7 @@ void CameraView::loadTexture() {
       .setSubImage(0, {}, *image);
 }
 
-void CameraView::draw() {
+void MatView::draw() {
   shader.setTexture(texture);
   mesh.draw(shader);
 }

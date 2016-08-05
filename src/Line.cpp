@@ -3,7 +3,9 @@
 #include <Magnum/DefaultFramebuffer.h>
 #include <Magnum/MeshTools/Interleave.h>
 
-Line::Line() : thickness(15.f), scale{1.f, 1.f}, position{0.f, 0.f} {
+Line::Line()
+    : thickness(15.f), color{1.f, 1.f, 1.f}, scale{1.f, 1.f},
+      position{0.f, 0.f} {
   mesh.setPrimitive(MeshPrimitive::TriangleStrip);
 }
 
@@ -27,13 +29,13 @@ void Line::draw() {
   Matrix3 projection = Matrix3::scaling(Vector2::yScale(size.aspectRatio()));
   Matrix3 transform =
       Matrix3::translation(
-          Vector2{position.x() / size.x() * 2, -position.y() / size.y() * 2}) *
-      Matrix3::scaling(
-          Vector2{scale.x() / size.x() * 2, -scale.x() / size.y() * 2});
+          Vector2{position.x() / size.x(), -position.y() / size.y()} * 2) *
+      Matrix3::scaling(Vector2{scale.x() / size.x(), -scale.x() / size.y()} *
+                       2);
   // update shader
   shader.setTransformationProjectionMatrix(projection * transform)
-      .setColor(Color3(1.f, 1.f, 1.f))
-      .setThickness(20.f);
+      .setColor(color)
+      .setThickness(thickness);
   // draw mesh
   mesh.draw(shader);
 }

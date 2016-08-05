@@ -56,17 +56,15 @@ void FlyCaptureCamera::update() {
   if (error != FlyCapture2::PGRERROR_OK) {
     // std::cout << "capture error" << std::endl;
   } else {
+    updateCvImage();
     isImageNew = true;
   }
 }
 
 void FlyCaptureCamera::saveImage(float scale) {
-  cv::Mat currentFrame = getCvMat().clone();
   cv::Mat resizedFrame;
-  resizedFrame.create(currentFrame.rows * scale, currentFrame.cols * scale,
-                      CV_8UC3);
-  cv::resize(currentFrame, resizedFrame, resizedFrame.size(), 0, 0,
-             cv::INTER_AREA);
+  resizedFrame.create(cvImage.rows * scale, cvImage.cols * scale, CV_8UC3);
+  cv::resize(cvImage, resizedFrame, resizedFrame.size(), 0, 0, cv::INTER_AREA);
   // retrieve current time
   time_t now = time(NULL);
   struct tm tstruct;
@@ -76,16 +74,15 @@ void FlyCaptureCamera::saveImage(float scale) {
   cv::imwrite("export/" + std::string{buf} + ".jpg", resizedFrame);
 }
 
-const FlyCapture2::Image &FlyCaptureCamera::getRawImage() { return rawImage; }
-
-cv::Mat FlyCaptureCamera::getCvMat() {
+void FlyCaptureCamera::updateCvImage() {
   // convert to rgb
   FlyCapture2::Image rgbImage;
-  rawImage.Convert(FlyCapture2::PIXEL_FORMAT_BGR, &rgbImage);
+  rawImage.Convert(FlyCapture2::PIXEL_FORMAT_RGB, &rgbImage);
   // convert to OpenCV Mat
   unsigned int rowBytes = static_cast<double>(rgbImage.GetReceivedDataSize()) /
                           static_cast<double>(rgbImage.GetRows());
-  cv::Mat image = cv::Mat(rgbImage.GetRows(), rgbImage.GetCols(), CV_8UC3,
-                          rgbImage.GetData(), rowBytes);
-  return image;
+  // TODO: find why we get artefacts when we remove the clone
+  cvImage = cv::Mat(rgbImage.GetRows(), rgbImage.GetCols(), CV_8UC3,
+                    rgbImage.GetData(), rowBytes)
+                .clone();
 }

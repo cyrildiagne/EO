@@ -12,13 +12,14 @@ public:
   void update();
   void saveImage(float scale);
   bool hasNewImage() { return isImageNew; };
-  cv::Mat getCvMat();
-  const FlyCapture2::Image &getRawImage();
+  const cv::Mat &getCvImage() { return cvImage; }
 
 private:
   FlyCapture2::Camera camera;
   FlyCapture2::Image rawImage;
+  cv::Mat cvImage;
   bool isImageNew;
+  void updateCvImage();
 };
 
 #endif /* end of include guard: FlyCaptureCamera_h */

@@ -8,9 +8,9 @@
 
 #include "BallMan.h"
 #include "BallTracker.h"
-#include "CameraView.h"
 #include "FlyCaptureCamera.h"
 #include "Label.h"
+#include "MatView.h"
 
 using namespace Magnum;
 
@@ -25,7 +25,7 @@ private:
   void keyPressEvent(KeyEvent &event) override;
   Label fpsView;
   Timeline timeline;
-  CameraView cameraView;
+  MatView MatView;
   std::unique_ptr<FlyCaptureCamera> fcCamera;
   BallTracker ballTracker;
   Vector2i mouse;
@@ -45,7 +45,7 @@ App::App(const Arguments &arguments)
     fcCamera = nullptr;
   }
   // camera view
-  cameraView.setup();
+  MatView.setup();
   // ball tracker
   ballTracker.setup();
   // ballmen setup
@@ -67,7 +67,7 @@ void App::tickEvent() {
   if (fcCamera) {
     fcCamera->update();
     if (fcCamera->hasNewImage()) {
-      ballTracker.update(fcCamera->getCvMat());
+      ballTracker.update(fcCamera->getCvImage());
     }
   } else {
     // use a mouse controlled circle if no camera is connected
@@ -93,13 +93,14 @@ void App::drawEvent() {
   // draw our content
   if (fcCamera) {
     if (fcCamera->hasNewImage()) {
-      cameraView.updateTexture(fcCamera->getRawImage());
+      MatView.updateTexture(ballTracker.getImage());
     }
-    cameraView.draw();
+    MatView.draw();
   }
   fpsView.draw();
   // draw ballmen
   for (const Circle &c : ballTracker.circles) {
+    (void)c;
     ballman.draw();
   }
   // swap buffers

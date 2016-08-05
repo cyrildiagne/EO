@@ -13,6 +13,7 @@ using namespace Magnum;
 class Body : public Line {
 public:
   void setup(float radius, int numSegments) {
+    this->radius = radius;
     std::vector<Vector2> pts;
     const float PI = 3.14159265359;
     for (int i = 0; i < numSegments + 1; i++) {
@@ -22,6 +23,7 @@ public:
     }
     setPoints(pts);
   }
+  float radius;
 };
 
 #endif /* end of include guard: Body_h */

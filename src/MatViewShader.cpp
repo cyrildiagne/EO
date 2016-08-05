@@ -1,11 +1,11 @@
-#include "CameraViewShader.h"
+#include "MatViewShader.h"
 
 #include <Corrade/Utility/Resource.h>
 #include <Magnum/Context.h>
 #include <Magnum/Shader.h>
 #include <Magnum/Version.h>
 
-CameraViewShader::CameraViewShader() {
+MatViewShader::MatViewShader() {
   MAGNUM_ASSERT_VERSION_SUPPORTED(Version::GL330);
 
   const Utility::Resource rs{"assets"};
@@ -13,8 +13,8 @@ CameraViewShader::CameraViewShader() {
   Shader vert{Version::GL330, Shader::Type::Vertex};
   Shader frag{Version::GL330, Shader::Type::Fragment};
 
-  vert.addSource(rs.get("CameraViewShader.vert"));
-  frag.addSource(rs.get("CameraViewShader.frag"));
+  vert.addSource(rs.get("MatViewShader.vert"));
+  frag.addSource(rs.get("MatViewShader.frag"));
 
   CORRADE_INTERNAL_ASSERT_OUTPUT(Shader::compile({vert, frag}));
 

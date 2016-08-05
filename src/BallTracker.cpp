@@ -2,6 +2,8 @@
 
 void BallTracker::setup() {}
 
+const cv::Mat &BallTracker::getImage() { return currFrame; }
+
 void BallTracker::update(const cv::Mat frame) {
   const float scale = 0.25;
   // get scaled down copy
@@ -61,4 +63,7 @@ void BallTracker::update(const cv::Mat frame) {
     float cy = center.y - resizedFrame.rows * 0.5;
     circles.push_back(Circle{-cx / scale, cy / scale, radius / scale});
   }
+
+  // update currframe for rendering
+  currFrame = frame;
 }
