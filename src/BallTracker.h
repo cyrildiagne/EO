@@ -17,6 +17,7 @@ public:
   void update(const cv::Mat frame);
   const cv::Mat &getImage();
   std::vector<Circle> circles;
+  float trackTime;
 
 private:
   cv::Mat currFrame;

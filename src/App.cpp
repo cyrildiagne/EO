@@ -83,7 +83,8 @@ void App::tickEvent() {
   // update framerate label
   const float fps = 1.0f / timeline.previousFrameDuration();
   std::ostringstream text;
-  text << Int(fps) << "fps";
+  text << Int(fps) << "fps" << std::endl
+       << "tracking: " << Int(ballTracker.trackTime) << "ms";
   fpsView.setText(text.str());
 }
 

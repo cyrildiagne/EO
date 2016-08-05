@@ -1,20 +1,21 @@
 #include "BallTracker.h"
+#include <chrono>
 
 void BallTracker::setup() {}
 
 const cv::Mat &BallTracker::getImage() { return currFrame; }
 
 void BallTracker::update(const cv::Mat frame) {
-  const float scale = 0.25;
+  // start chrono
+  auto start = std::chrono::steady_clock::now();
   // get scaled down copy
+  const float scale = 0.25;
   cv::Mat resizedFrame;
   resizedFrame.create(frame.rows * scale, frame.cols * scale, CV_8UC3);
   cv::resize(frame, resizedFrame, resizedFrame.size(), 0, 0, cv::INTER_LINEAR);
-
   // convert to hsv
   cv::Mat hsvFrame;
   cv::cvtColor(resizedFrame, hsvFrame, CV_BGR2HSV);
-
   // threshold
   const int minHue = 5;
   const int maxHue = 120;
@@ -26,7 +27,6 @@ void BallTracker::update(const cv::Mat frame) {
   cv::Scalar hsv_max = cv::Scalar(maxHue, maxSaturation, maxValue);
   cv::Mat threshFrame;
   cv::inRange(hsvFrame, hsv_min, hsv_max, threshFrame);
-
   // erode / dilate morph
   cv::Mat morphFrame;
   const int morphSize = 6;
@@ -41,7 +41,6 @@ void BallTracker::update(const cv::Mat frame) {
   cv::Mat element2 = getStructuringElement(
       morph_elem, cv::Size(2 * msize + 1, 2 * msize + 1), pos);
   cv::morphologyEx(morphFrame, morphFrame, cv::MORPH_CLOSE, element2);
-
   // find contours
   typedef std::vector<cv::Point> PointVec;
   std::vector<PointVec> contours;
@@ -63,7 +62,10 @@ void BallTracker::update(const cv::Mat frame) {
     float cy = center.y - resizedFrame.rows * 0.5;
     circles.push_back(Circle{-cx / scale, cy / scale, radius / scale});
   }
-
+  // update chrono
+  auto end = std::chrono::steady_clock::now();
+  auto diff = end - start;
+  trackTime = std::chrono::duration<double, std::milli>(diff).count();
   // update currframe for rendering
-  currFrame = frame;
+  currFrame = resizedFrame;
 }
