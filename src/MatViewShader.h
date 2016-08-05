@@ -18,6 +18,12 @@ public:
     return *this;
   }
 
+  MatViewShader &setNumChannels(int numChannels) {
+    int loc = uniformLocation("numChannels");
+    setUniform(loc, numChannels);
+    return *this;
+  }
+
 private:
   enum : Int { TextureLayer = 0 };
 };

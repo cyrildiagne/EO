@@ -32,13 +32,15 @@ void MatView::updateTexture(const cv::Mat img) {
   // retrieve image size
   const Vector2i size(img.cols, img.rows);
   // copy data to magnum raw buffer
-  std::size_t dataSize = img.cols * img.rows * 3;
+  std::size_t dataSize = img.total() * img.elemSize();
   Containers::Array<char> data{dataSize};
   std::copy_n(img.ptr(), data.size(), data.begin());
   // retrieve parsed ImageData from flycapture image
   PixelStorage storage;
-  Trade::ImageData2D image{storage, PixelFormat::RGB, PixelType::UnsignedByte,
-                           size, std::move(data)};
+  numChannels = img.channels();
+  PixelFormat format = (numChannels == 1) ? PixelFormat::Red : PixelFormat::RGB;
+  Trade::ImageData2D image{storage, format, PixelType::UnsignedByte, size,
+                           std::move(data)};
   // Set texture data and parameters
   texture.setWrapping(Sampler::Wrapping::ClampToEdge)
       .setMagnificationFilter(Sampler::Filter::Linear)
@@ -47,30 +49,8 @@ void MatView::updateTexture(const cv::Mat img) {
       .setSubImage(0, {}, image);
 }
 
-void MatView::loadTexture() {
-  // load the plugin
-  PluginManager::Manager<Trade::AbstractImporter> manager{
-      MAGNUM_PLUGINS_IMPORTER_DIR};
-  std::unique_ptr<Trade::AbstractImporter> importer =
-      manager.loadAndInstantiate("TgaImporter");
-  if (!importer)
-    std::exit(1);
-  // load texture
-  const Utility::Resource rs{"assets"};
-  if (!importer->openData(rs.getRaw("stone.tga")))
-    std::exit(2);
-  // retrieve parsed ImageData from importer
-  std::optional<Trade::ImageData2D> image = importer->image2D(0);
-  CORRADE_INTERNAL_ASSERT(image);
-  // Set texture data and parameters
-  texture.setWrapping(Sampler::Wrapping::ClampToEdge)
-      .setMagnificationFilter(Sampler::Filter::Linear)
-      .setMinificationFilter(Sampler::Filter::Linear)
-      .setStorage(1, TextureFormat::RGB8, image->size())
-      .setSubImage(0, {}, *image);
-}
-
 void MatView::draw() {
   shader.setTexture(texture);
+  shader.setNumChannels(numChannels);
   mesh.draw(shader);
 }

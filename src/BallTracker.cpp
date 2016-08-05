@@ -16,8 +16,8 @@ void BallTracker::update(const cv::Mat frame) {
   cv::cvtColor(resizedFrame, hsvFrame, CV_BGR2HSV);
 
   // threshold
-  const int minHue = 11;
-  const int maxHue = 44;
+  const int minHue = 5;
+  const int maxHue = 120;
   const int minSaturation = 0;
   const int maxSaturation = 255;
   const int minValue = 27;
@@ -46,7 +46,7 @@ void BallTracker::update(const cv::Mat frame) {
   typedef std::vector<cv::Point> PointVec;
   std::vector<PointVec> contours;
   std::vector<cv::Vec4i> hierarchy;
-  cv::findContours(morphFrame, contours, hierarchy, CV_RETR_EXTERNAL,
+  cv::findContours(morphFrame.clone(), contours, hierarchy, CV_RETR_EXTERNAL,
                    CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
   // find
   circles.clear();

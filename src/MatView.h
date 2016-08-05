@@ -20,6 +20,7 @@ private:
   Magnum::Texture2D texture;
   Magnum::Buffer buffer;
   MatViewShader shader;
+  int numChannels;
 };
 
 #endif /* end of include guard: MatView_h */
