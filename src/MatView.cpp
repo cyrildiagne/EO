@@ -35,13 +35,16 @@ void MatView::updateTexture(const cv::Mat img) {
   std::size_t dataSize = img.total() * img.elemSize();
   Containers::Array<char> data{dataSize};
   std::copy_n(img.ptr(), data.size(), data.begin());
-  // retrieve parsed ImageData from flycapture image
-  PixelStorage storage;
+  // setup pixelformat depending on number of channels
   numChannels = img.channels();
   PixelFormat format = (numChannels == 1) ? PixelFormat::Red : PixelFormat::RGB;
+  // create buffer
+  PixelStorage storage;
   Trade::ImageData2D image{storage, format, PixelType::UnsignedByte, size,
                            std::move(data)};
   // Set texture data and parameters
+  // TODO: prevent texture reallocation and reuse instead
+  texture = Texture2D{};
   texture.setWrapping(Sampler::Wrapping::ClampToEdge)
       .setMagnificationFilter(Sampler::Filter::Linear)
       .setMinificationFilter(Sampler::Filter::Linear)

@@ -84,7 +84,7 @@ void App::tickEvent() {
   const float fps = 1.0f / timeline.previousFrameDuration();
   std::ostringstream text;
   text << Int(fps) << "fps" << std::endl
-       << "tracking: " << Int(ballTracker.trackTime) << "ms";
+       << "tracking: " << Int(ballTracker.getTrackTime()) << "ms";
   fpsView.setText(text.str());
 }
 
@@ -94,7 +94,7 @@ void App::drawEvent() {
   // draw our content
   if (fcCamera) {
     if (fcCamera->hasNewImage()) {
-      MatView.updateTexture(ballTracker.getImage());
+      MatView.updateTexture(ballTracker.getCurrFrame());
     }
     MatView.draw();
   }
@@ -120,7 +120,9 @@ void App::keyPressEvent(KeyEvent &event) {
   if (event.key() == KeyEvent::Key::S) {
     // save image
     fcCamera->saveImage(0.5);
-  };
+  } else if (event.key() == KeyEvent::Key::Space) {
+    ballTracker.setNextFrameId();
+  }
   event.setAccepted(true);
 }
 

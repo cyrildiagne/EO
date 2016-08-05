@@ -1,9 +1,25 @@
 #include "BallTracker.h"
 #include <chrono>
 
-void BallTracker::setup() {}
+void BallTracker::setup() {
+  rescale = 0.25;
+  minHue = 5;
+  maxHue = 120;
+  minSaturation = 0;
+  maxSaturation = 255;
+  minValue = 0;
+  maxValue = 255;
+  currFrameId = FrameId::Input;
+}
 
-const cv::Mat &BallTracker::getImage() { return currFrame; }
+const cv::Mat &BallTracker::getCurrFrame() { return currFrame; }
+
+void BallTracker::setNextFrameId() {
+  currFrameId = static_cast<FrameId>(currFrameId + 1);
+  if (currFrameId > FrameId::Morph) {
+    currFrameId = FrameId::Input;
+  }
+}
 
 void BallTracker::update(const cv::Mat frame) {
   // start chrono
@@ -17,12 +33,6 @@ void BallTracker::update(const cv::Mat frame) {
   cv::Mat hsvFrame;
   cv::cvtColor(resizedFrame, hsvFrame, CV_BGR2HSV);
   // threshold
-  const int minHue = 5;
-  const int maxHue = 120;
-  const int minSaturation = 0;
-  const int maxSaturation = 255;
-  const int minValue = 27;
-  const int maxValue = 255;
   cv::Scalar hsv_min = cv::Scalar(minHue, minSaturation, minValue);
   cv::Scalar hsv_max = cv::Scalar(maxHue, maxSaturation, maxValue);
   cv::Mat threshFrame;
@@ -67,5 +77,21 @@ void BallTracker::update(const cv::Mat frame) {
   auto diff = end - start;
   trackTime = std::chrono::duration<double, std::milli>(diff).count();
   // update currframe for rendering
-  currFrame = resizedFrame;
+  switch (currFrameId) {
+  case FrameId::Input:
+    currFrame = frame;
+    break;
+  case FrameId::Resize:
+    currFrame = resizedFrame;
+    break;
+  case FrameId::HSV:
+    currFrame = hsvFrame;
+    break;
+  case FrameId::Threshold:
+    currFrame = threshFrame;
+    break;
+  case FrameId::Morph:
+    currFrame = morphFrame;
+    break;
+  }
 }
