@@ -2,6 +2,8 @@
 
 #include "configure.h"
 #include <Corrade/PluginManager/Manager.h>
+#include <Magnum/DefaultFramebuffer.h>
+#include <Magnum/Math/Matrix3.h>
 #include <Magnum/MeshTools/Compile.h>
 #include <Magnum/MeshTools/Interleave.h>
 #include <Magnum/PixelFormat.h>
@@ -22,6 +24,7 @@ void MatView::setup() {
   buffer.setData(
       MeshTools::interleave(square.positions(0), square.textureCoords2D(0)),
       BufferUsage::StaticDraw);
+
   mesh.setPrimitive(square.primitive())
       .setCount(square.positions(0).size())
       .addVertexBuffer(buffer, 0, MatViewShader::Position{},
@@ -53,7 +56,14 @@ void MatView::updateTexture(const cv::Mat img) {
 }
 
 void MatView::draw() {
-  shader.setTexture(texture);
-  shader.setNumChannels(numChannels);
+  Vector2i size = defaultFramebuffer.viewport().size();
+  float viewportRatio = static_cast<float>(size.x()) / size.y();
+  float matRatio = 1280.f / 1080;
+  // get projection
+  Matrix3 projection =
+      Matrix3::scaling(Vector2::yScale(viewportRatio / matRatio));
+  shader.setTransformationProjectionMatrix(projection)
+      .setTexture(texture)
+      .setNumChannels(numChannels);
   mesh.draw(shader);
 }

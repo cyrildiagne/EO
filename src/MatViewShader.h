@@ -2,6 +2,7 @@
 #define MatViewShader_h
 
 #include <Magnum/AbstractShaderProgram.h>
+#include <Magnum/Math/Matrix3.h>
 #include <Magnum/Texture.h>
 
 using namespace Magnum;
@@ -15,6 +16,12 @@ public:
 
   MatViewShader &setTexture(Texture2D &texture) {
     texture.bind(TextureLayer);
+    return *this;
+  }
+
+  MatViewShader &setTransformationProjectionMatrix(const Matrix3 &matrix) {
+    int loc = uniformLocation("matrix");
+    setUniform(loc, matrix);
     return *this;
   }
 

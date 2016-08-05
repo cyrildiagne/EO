@@ -36,7 +36,10 @@ private:
 
 App::App(const Arguments &arguments)
     : Platform::Application(
-          arguments, Configuration().setTitle("EO beta").setSize({1280, 1024})),
+          arguments, Configuration()
+                         .setWindowFlags(Configuration::WindowFlag::Fullscreen)
+                         .setTitle("EO beta")
+                         .setSize({1920, 1080})),
       fcCamera(new FlyCaptureCamera) {
   ellapsedTime = 0.f;
   debugMode = false;
@@ -80,7 +83,9 @@ void App::tickEvent() {
     ballTracker.circles.push_back(Circle(x, y, 100));
   }
   for (const Circle &c : ballTracker.circles) {
-    ballman.update(Vector2{c.x, c.y}, c.radius, ellapsedTime);
+    float screenScale = 1920.f / 1280;
+    ballman.update(Vector2{c.x, c.y} * screenScale, c.radius * screenScale,
+                   ellapsedTime);
   }
   // update framerate label
   if (debugMode) {
