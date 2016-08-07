@@ -68,6 +68,8 @@ App::App(const Arguments &arguments)
 
 void App::tickEvent() {
   ellapsedTime += timeline.previousFrameDuration();
+  Vector2i size = defaultFramebuffer.viewport().size();
+  float screenScale = static_cast<float>(size.x()) / 1280;
   // update camera
   if (fcCamera) {
     fcCamera->update();
@@ -78,13 +80,12 @@ void App::tickEvent() {
     // use a mouse controlled circle if no camera is connected
     ballTracker.circles.clear();
     Vector2i size = defaultFramebuffer.viewport().size();
-    float x = mouse.x() - size.x() * 0.5;
-    float y = mouse.y() - size.y() * 0.5;
+    float x = (mouse.x() - size.x() * 0.5) / screenScale;
+    float y = (mouse.y() - size.y() * 0.5) / screenScale;
     ballTracker.circles.push_back(Circle(x, y, 100));
   }
   for (const Circle &c : ballTracker.circles) {
-    float screenScale = 1920.f / 1280;
-    ballman.update(Vector2{c.x, c.y} * screenScale, c.radius * screenScale,
+    ballman.update(Vector2(c.x, c.y) * screenScale, c.radius * screenScale,
                    ellapsedTime);
   }
   // update framerate label
