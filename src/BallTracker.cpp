@@ -3,11 +3,11 @@
 
 void BallTracker::setup() {
   rescale = 0.25;
-  minHue = 5;
-  maxHue = 110;
+  minHue = 20;
+  maxHue = 100;
   minSaturation = 0;
   maxSaturation = 255;
-  minValue = 0;
+  minValue = 30;
   maxValue = 255;
   currFrameId = FrameId::Input;
 }
@@ -39,7 +39,7 @@ void BallTracker::update(const cv::Mat frame) {
   cv::inRange(hsvFrame, hsv_min, hsv_max, threshFrame);
   // erode / dilate morph
   cv::Mat morphFrame;
-  const int morphSize = 6;
+  const int morphSize = 2;
   const int morph_elem = 2; // 0: Rect - 1: Cross - 2: Ellipse
   float msize = morphSize;
   const cv::Point pos = cv::Point(msize, msize);
