@@ -1,4 +1,4 @@
-#include "view/ballman/Line.h"
+#include "view/primitives/Line.h"
 
 #include <Magnum/DefaultFramebuffer.h>
 #include <Magnum/MeshTools/Interleave.h>

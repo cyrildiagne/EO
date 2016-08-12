@@ -1,8 +1,9 @@
 #ifndef BallMan_h
 #define BallMan_h
 
-#include "view/ballman/Body.h"
+#include "view/ballman/Face.h"
 #include "view/ballman/Leg.h"
+#include "view/primitives/Circle.h"
 
 class BallMan {
 public:
@@ -11,11 +12,12 @@ public:
   void draw();
 
 private:
-  Body body;
+  Circle body;
   Leg leftArm;
   Leg rightArm;
   Leg leftLeg;
   Leg rightLeg;
+  Face face;
 };
 
 #endif /* end of include guard: BallMan_h */

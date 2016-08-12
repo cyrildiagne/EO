@@ -28,7 +28,8 @@ add_executable(EO
   src/view/Label.cpp
   src/view/ballman/BallMan.cpp
   src/view/ballman/Leg.cpp
-  src/view/ballman/Line.cpp
+  src/view/ballman/Face.cpp
+  src/view/primitives/Line.cpp
   ${MatView_RESOURCES})
 
 target_include_directories(EO PRIVATE ${CMAKE_CURRENT_BINARY_DIR})

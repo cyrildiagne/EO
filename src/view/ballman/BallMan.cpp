@@ -43,4 +43,6 @@ void BallMan::draw() {
   rightArm.draw();
   leftLeg.draw();
   rightLeg.draw();
+  // draw face
+  face.draw();
 }

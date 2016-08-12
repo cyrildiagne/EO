@@ -4,6 +4,8 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+namespace tracking {
+
 struct Circle {
   Circle(float x, float y, float radius) : x(x), y(y), radius(radius) {}
   float x;
@@ -35,4 +37,6 @@ private:
   // store chrono result
   double trackTime;
 };
+}
+
 #endif /* end of include guard: BallTracker_h */

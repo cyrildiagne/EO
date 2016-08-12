@@ -27,7 +27,7 @@ private:
   Timeline timeline;
   MatView MatView;
   std::unique_ptr<FlyCaptureCamera> fcCamera;
-  BallTracker ballTracker;
+  tracking::BallTracker ballTracker;
   Vector2i mouse;
   BallMan ballman;
   bool debugMode;
@@ -84,9 +84,9 @@ void App::tickEvent() {
     Vector2i size = defaultFramebuffer.viewport().size();
     float x = (mouse.x() - size.x() * 0.5) / screenScale;
     float y = (mouse.y() - size.y() * 0.5) / screenScale;
-    ballTracker.circles.push_back(Circle(x, y, 100));
+    ballTracker.circles.push_back(tracking::Circle(x, y, 100));
   }
-  for (const Circle &c : ballTracker.circles) {
+  for (const tracking::Circle &c : ballTracker.circles) {
     ballman.update(Vector2(c.x, c.y) * screenScale, c.radius * screenScale,
                    ellapsedTime);
   }
@@ -116,7 +116,7 @@ void App::drawEvent() {
     fpsView.draw();
   }
   // draw ballmen
-  for (const Circle &c : ballTracker.circles) {
+  for (const tracking::Circle &c : ballTracker.circles) {
     (void)c;
     ballman.draw();
   }

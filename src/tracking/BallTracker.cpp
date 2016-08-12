@@ -1,6 +1,8 @@
 #include "tracking/BallTracker.h"
 #include <chrono>
 
+namespace tracking {
+
 void BallTracker::setup() {
   rescale = 0.25;
   minHue = 20;
@@ -94,4 +96,5 @@ void BallTracker::update(const cv::Mat frame) {
     currFrame = morphFrame;
     break;
   }
+}
 }

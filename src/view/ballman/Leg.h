@@ -8,7 +8,7 @@
 #include <Magnum/Mesh.h>
 #include <Magnum/Shaders/Flat.h>
 
-#include "view/ballman/Line.h"
+#include "view/primitives/Line.h"
 
 using namespace Magnum;
 

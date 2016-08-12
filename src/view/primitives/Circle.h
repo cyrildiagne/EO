@@ -1,5 +1,5 @@
-#ifndef Body_h
-#define Body_h
+#ifndef view_primitives_Circle_h
+#define view_primitives_Circle_h
 
 #include <memory>
 
@@ -8,11 +8,11 @@
 #include <Magnum/Mesh.h>
 #include <Magnum/Shaders/Flat.h>
 
-#include "view/ballman/Line.h"
+#include "view/primitives/Line.h"
 
 using namespace Magnum;
 
-class Body : public Line {
+class Circle : public Line {
 public:
   void setup(float radius, int numSegments) {
     this->radius = radius;
@@ -28,4 +28,4 @@ public:
   float radius;
 };
 
-#endif /* end of include guard: Body_h */
+#endif /* end of include guard: view_primitives_Circle_h */

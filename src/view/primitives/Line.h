@@ -7,7 +7,7 @@
 #include <Magnum/Math/Vector2.h>
 #include <Magnum/Mesh.h>
 
-#include "view/ballman/LineShader.h"
+#include "view/primitives/LineShader.h"
 
 using namespace Magnum;
 
