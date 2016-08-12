@@ -23,11 +23,5 @@
     DEALINGS IN THE SOFTWARE.
 */
 
-#ifdef CORRADE_IS_DEBUG_BUILD
-#else
-#endif
-
-#define MAGNUM_PLUGINS_IMPORTER_DIR \
-  "./libs/magnum/src/MagnumPlugins/TgaImporter"
 #define MAGNUM_PLUGINS_FONT_DIR \
-  "./libs/magnum-plugins/src/MagnumPlugins/FreeTypeFont"
+  "./FreeTypeFont"

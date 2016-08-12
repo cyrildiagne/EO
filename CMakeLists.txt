@@ -37,7 +37,10 @@ target_include_directories(EO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 target_link_libraries(EO
   ${FlyCapture2_LIBRARIES}
-  ${OpenCV_LIBS}
+  opencv_core
+  opencv_imgproc
+  opencv_highgui
+  opencv_imgcodecs
   Magnum::Application
   Magnum::Magnum
   Magnum::Shaders
