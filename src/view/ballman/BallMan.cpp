@@ -1,4 +1,4 @@
-#include "BallMan.h"
+#include "view/ballman/BallMan.h"
 
 #include <Magnum/Math/Vector.h>
 

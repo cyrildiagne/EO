@@ -1,11 +1,13 @@
 #ifndef Line_h
 #define Line_h
 
-#include "LineShader.h"
+#include <memory>
+
 #include <Magnum/Buffer.h>
 #include <Magnum/Math/Vector2.h>
 #include <Magnum/Mesh.h>
-#include <memory>
+
+#include "view/ballman/LineShader.h"
 
 using namespace Magnum;
 

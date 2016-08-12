@@ -1,6 +1,4 @@
-#include "Leg.h"
-
-#include "MagnumUtils.h"
+#include "view/ballman/Leg.h"
 
 Leg::Leg() : gravity(0.0), segmentLength(5) {}
 

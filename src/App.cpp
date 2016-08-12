@@ -6,11 +6,11 @@
 #include <Magnum/Renderer.h>
 #include <Magnum/Timeline.h>
 
-#include "BallMan.h"
-#include "BallTracker.h"
-#include "FlyCaptureCamera.h"
-#include "Label.h"
-#include "MatView.h"
+#include "capture/FlyCaptureCamera.h"
+#include "tracking/BallTracker.h"
+#include "view/Label.h"
+#include "view/MatView.h"
+#include "view/ballman/BallMan.h"
 
 using namespace Magnum;
 
@@ -63,6 +63,8 @@ App::App(const Arguments &arguments)
                              Renderer::BlendEquation::Add);
   // limit framrate to 60hz
   setMinimalLoopPeriod(16);
+  // enable VSync
+  setSwapInterval(1);
   timeline.start();
 }
 

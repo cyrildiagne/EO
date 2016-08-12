@@ -1,12 +1,14 @@
 #ifndef Body_h
 #define Body_h
 
-#include "Line.h"
+#include <memory>
+
 #include <Magnum/Buffer.h>
 #include <Magnum/Math/Vector2.h>
 #include <Magnum/Mesh.h>
 #include <Magnum/Shaders/Flat.h>
-#include <memory>
+
+#include "view/ballman/Line.h"
 
 using namespace Magnum;
 

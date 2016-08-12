@@ -1,4 +1,4 @@
-#include "FlyCaptureCamera.h"
+#include "capture/FlyCaptureCamera.h"
 #include <chrono>
 #include <ctime>
 #include <iomanip>

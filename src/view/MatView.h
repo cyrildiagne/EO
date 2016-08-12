@@ -5,7 +5,7 @@
 #include <Magnum/Mesh.h>
 #include <Magnum/Texture.h>
 
-#include "MatViewShader.h"
+#include "view/MatViewShader.h"
 #include <opencv2/core/core.hpp>
 
 class MatView {

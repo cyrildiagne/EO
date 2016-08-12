@@ -1,8 +1,8 @@
 #ifndef BallMan_h
 #define BallMan_h
 
-#include "Body.h"
-#include "Leg.h"
+#include "view/ballman/Body.h"
+#include "view/ballman/Leg.h"
 
 class BallMan {
 public:

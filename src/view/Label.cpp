@@ -1,4 +1,4 @@
-#include "Label.h"
+#include "view/Label.h"
 #include "configure.h"
 #include <Magnum/DefaultFramebuffer.h>
 
