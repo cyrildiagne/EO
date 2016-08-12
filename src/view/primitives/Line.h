@@ -14,6 +14,7 @@ using namespace Magnum;
 class Line {
 public:
   Line();
+  ~Line();
   void setPoints(const std::vector<Vector2> &pts);
   void draw();
 

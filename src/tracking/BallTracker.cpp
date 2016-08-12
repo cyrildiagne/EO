@@ -7,8 +7,8 @@ void BallTracker::setup() {
   rescale = 0.25;
   minHue = 20;
   maxHue = 100;
-  minSaturation = 0;
-  maxSaturation = 255;
+  minSaturation = 30;
+  maxSaturation = 225;
   minValue = 30;
   maxValue = 255;
   currFrameId = FrameId::Input;

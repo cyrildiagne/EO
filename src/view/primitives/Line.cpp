@@ -9,6 +9,8 @@ Line::Line()
   mesh.setPrimitive(MeshPrimitive::TriangleStrip);
 }
 
+Line::~Line() {}
+
 void Line::setPoints(const std::vector<Vector2> &pts) {
   std::vector<Vector2> pos;
   for (const auto &pt : pts) {

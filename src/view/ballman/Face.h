@@ -16,13 +16,13 @@ using namespace Magnum;
 class Face {
 public:
   void setup();
-  void update();
+  void update(Vector2 p, Vector2 s);
   void draw();
 
 private:
-  Line leftEye;
-  Line rightEye;
-  Line mouth;
+  std::unique_ptr<Line> leftEye;
+  std::unique_ptr<Line> rightEye;
+  std::unique_ptr<Line> mouth;
 };
 
 #endif /* end of include guard: view_ballman_Face_h */

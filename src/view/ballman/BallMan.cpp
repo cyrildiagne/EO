@@ -12,6 +12,8 @@ void BallMan::setup() {
   rightArm.setup(20);
   leftLeg.setup();
   rightLeg.setup();
+  // setup face
+  face.setup();
 }
 
 void BallMan::update(Vector2 p, float radius, float t) {
@@ -33,6 +35,8 @@ void BallMan::update(Vector2 p, float radius, float t) {
   // update body radius
   body.scale = s;
   body.position = p;
+  // update face
+  face.update(p, s);
 }
 
 void BallMan::draw() {

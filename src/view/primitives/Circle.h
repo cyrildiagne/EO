@@ -14,6 +14,9 @@ using namespace Magnum;
 
 class Circle : public Line {
 public:
+  Circle() {}
+  Circle(float radius, int numSegments) { setup(radius, numSegments); }
+  // setup
   void setup(float radius, int numSegments) {
     this->radius = radius;
     std::vector<Vector2> pts;
@@ -23,6 +26,8 @@ public:
       pts.push_back(
           Vector2(cos(pct * PI * 2) * radius, sin(pct * PI * 2) * radius));
     }
+    pts.push_back(
+        Vector2(cos(1.02 * PI * 2) * radius, sin(1.02 * PI * 2) * radius));
     setPoints(pts);
   }
   float radius;
