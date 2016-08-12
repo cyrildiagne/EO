@@ -63,8 +63,6 @@ App::App(const Arguments &arguments)
                              Renderer::BlendEquation::Add);
   // limit framrate to 60hz
   setMinimalLoopPeriod(16);
-  // enable VSync
-  setSwapInterval(1);
   timeline.start();
 }
 
