@@ -17,6 +17,13 @@ FlyCaptureCamera::~FlyCaptureCamera() {
     // This may fail when the camera was removed, so don't show
     // an error message
   }
+  // power off, 0x610 address doesn't seem to be accessible from a constant in
+  // the SDK but works as indicated in the documentation
+  error = camera.WriteRegister(0x610, 0);
+  if (error != FlyCapture2::PGRERROR_OK) {
+    std::cout << "failed to power off" << std::endl;
+  }
+  // disconnect
   camera.Disconnect();
   std::cout << "Camera disconnected." << std::endl;
 }
