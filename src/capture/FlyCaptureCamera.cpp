@@ -47,6 +47,44 @@ bool FlyCaptureCamera::setup() {
     std::cout << "Failed to start image capture" << std::endl;
     return false;
   }
+  // Set settings
+  setProperty(FlyCapture2::BRIGHTNESS, 0.0);
+  setProperty(FlyCapture2::AUTO_EXPOSURE, 0.0);
+  setProperty(FlyCapture2::SHUTTER, 8.0);
+  setProperty(FlyCapture2::GAIN, 0.0);
+  setProperty(FlyCapture2::FRAME_RATE, 60.0);
+  setWhiteBalance(522, 725);
+  return true;
+}
+
+bool FlyCaptureCamera::setProperty(FlyCapture2::PropertyType type,
+                                   float value) {
+  FlyCapture2::Property prop;
+  prop.type = type;
+  prop.onOff = true;           // set property activated
+  prop.autoManualMode = false; // disable auto mode
+  prop.absControl = true;      // set absolute value
+  prop.absValue = value;
+  FlyCapture2::Error error = camera.SetProperty(&prop);
+  if (error != FlyCapture2::PGRERROR_OK) {
+    std::cout << "Failed to set property" << std::endl;
+    return false;
+  }
+  return true;
+}
+
+bool FlyCaptureCamera::setWhiteBalance(int red, int blue) {
+  FlyCapture2::Property prop;
+  prop.type = FlyCapture2::WHITE_BALANCE;
+  prop.onOff = true;           // set property activated
+  prop.autoManualMode = false; // disable auto mode
+  prop.valueA = red;
+  prop.valueB = blue;
+  FlyCapture2::Error error = camera.SetProperty(&prop);
+  if (error != FlyCapture2::PGRERROR_OK) {
+    std::cout << "Failed to set white balance" << std::endl;
+    return false;
+  }
   return true;
 }
 

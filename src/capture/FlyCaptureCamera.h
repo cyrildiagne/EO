@@ -10,6 +10,8 @@ public:
   ~FlyCaptureCamera();
   bool setup();
   void update();
+  bool setProperty(FlyCapture2::PropertyType type, float value);
+  bool setWhiteBalance(int red, int blue);
   void saveImage(float scale);
   bool hasNewImage() { return isImageNew; };
   const cv::Mat &getCvImage() { return cvImage; }
