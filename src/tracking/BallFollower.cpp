@@ -54,7 +54,18 @@ void BallFollower::process(const std::vector<DetectedCircle> &detected) {
       matchedPrevious[j] = true;
       // add to circles vector
       previous[j].circle = detected[i];
+      previous[j].numUpdatesMissing = 0;
       circles.push_back(previous[j]);
+    }
+  }
+
+  // add circles that are missing
+  for (size_t j = 0; j < previous.size(); j++) {
+    if (!matchedPrevious[j]) {
+      if (++previous[j].numUpdatesMissing < 30) {
+        // TODO: compute velocity and apply to position+radius based on history
+        circles.push_back(previous[j]);
+      }
     }
   }
 

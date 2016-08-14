@@ -8,9 +8,11 @@ namespace tracking {
 
 struct FollowedCircle {
   FollowedCircle(std::string label, DetectedCircle circle)
-      : label(label), circle{circle} {}
+      : label(label), circle{circle}, numUpdatesMissing(0) {}
   std::string label;
   DetectedCircle circle;
+  // tracks the number of frame that this circle has been missing
+  int numUpdatesMissing;
 };
 
 class BallFollower {
