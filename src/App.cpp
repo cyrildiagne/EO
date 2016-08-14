@@ -106,7 +106,7 @@ void App::updateBallMen(const std::vector<FollowedCircle> &circles) {
     b.second->alive = false;
   }
   // loop through all tracked circles
-  for (const tracking::FollowedCircle &c : ballTracker.follower.circles) {
+  for (const tracking::FollowedCircle &c : circles) {
     auto ball = ballmen.find(c.label);
     // circle needs a new character
     if (ball == ballmen.end()) {
