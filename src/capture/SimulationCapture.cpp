@@ -5,6 +5,8 @@
 
 #include <opencv2/imgproc/imgproc.hpp>
 
+cv::Point SimulationCapture::mouse;
+
 SimulationCapture::SimulationCapture() : isImageNew(false) {}
 SimulationCapture::~SimulationCapture() {}
 
@@ -43,6 +45,8 @@ void SimulationCapture::do_update() {
     }
     cv::circle(cvImage, c.position, c.radius, cv::Scalar(125, 255, 80), -1);
   }
+  // draw mouse circle
+  cv::circle(cvImage, mouse, 50, cv::Scalar(105, 235, 60), -1);
   isImageNew = true;
 }
 

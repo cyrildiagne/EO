@@ -14,6 +14,7 @@ public:
 
 class SimulationCapture : public AbstractCapture {
 public:
+  static cv::Point mouse;
   SimulationCapture();
   virtual ~SimulationCapture();
 

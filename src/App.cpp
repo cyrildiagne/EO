@@ -29,7 +29,6 @@ private:
   MatView MatView;
   std::unique_ptr<AbstractCapture> capture;
   tracking::BallTracker ballTracker;
-  Vector2i mouse;
   BallMan ballman;
   bool debugMode;
   float ellapsedTime;
@@ -77,13 +76,6 @@ void App::tickEvent() {
     if (capture->hasNewImage()) {
       ballTracker.update(capture->getCvImage());
     }
-  } else {
-    // use a mouse controlled circle if no camera is connected
-    ballTracker.circles.clear();
-    Vector2i size = defaultFramebuffer.viewport().size();
-    float x = (mouse.x() - size.x() * 0.5) / screenScale;
-    float y = (mouse.y() - size.y() * 0.5) / screenScale;
-    ballTracker.circles.push_back(tracking::Circle(x, y, 100));
   }
   for (const tracking::Circle &c : ballTracker.circles) {
     ballman.update(Vector2(c.x, c.y) * screenScale, c.radius * screenScale,
@@ -127,7 +119,13 @@ void App::drawEvent() {
 }
 
 void App::mouseMoveEvent(MouseMoveEvent &event) {
-  mouse = event.position();
+  Vector2i mouse = event.position();
+  Vector2i size = defaultFramebuffer.viewport().size();
+  float screenScale = static_cast<float>(size.x()) / 1280;
+  float x = static_cast<float>(size.x() - mouse.x()) / screenScale;
+  float y = static_cast<float>(mouse.y()) / screenScale;
+  SimulationCapture::mouse.x = x;
+  SimulationCapture::mouse.y = y;
   event.setAccepted();
 }
 
