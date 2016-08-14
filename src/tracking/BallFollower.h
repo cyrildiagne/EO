@@ -15,9 +15,10 @@ struct FollowedCircle {
 
 class BallFollower {
 public:
-  BallFollower(){};
+  BallFollower() : currLabel(0){};
   void process(const std::vector<DetectedCircle> &detected);
   std::vector<FollowedCircle> circles;
+  long int currLabel;
 };
 
 } // namespace eo
