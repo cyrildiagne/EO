@@ -8,6 +8,9 @@
 #include "view/MatViewShader.h"
 #include <opencv2/core/core.hpp>
 
+namespace eo {
+namespace view {
+
 class MatView {
 public:
   void setup();
@@ -22,5 +25,8 @@ private:
   MatViewShader shader;
   int numChannels;
 };
+
+} // namespace view
+} // namespace eo
 
 #endif /* end of include guard: MatView_h */

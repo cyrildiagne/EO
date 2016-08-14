@@ -1,6 +1,7 @@
 #include "tracking/BallTracker.h"
 #include <chrono>
 
+namespace eo {
 namespace tracking {
 
 void BallTracker::setup() {
@@ -23,7 +24,13 @@ void BallTracker::setNextFrameId() {
   }
 }
 
-void BallTracker::update(const cv::Mat frame) {
+void BallTracker::update(const cv::Mat &frame) {
+  // detect blobs from input frame
+  detect(frame);
+  // track identities
+}
+
+void BallTracker::detect(const cv::Mat &frame) {
   // start chrono
   auto start = std::chrono::steady_clock::now();
   // get scaled down copy
@@ -97,4 +104,5 @@ void BallTracker::update(const cv::Mat frame) {
     break;
   }
 }
-}
+} // namespace tracking
+} // namespace eo

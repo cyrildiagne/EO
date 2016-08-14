@@ -5,6 +5,9 @@
 #include "view/ballman/Leg.h"
 #include "view/primitives/Circle.h"
 
+namespace eo {
+namespace view {
+
 class BallMan {
 public:
   void setup();
@@ -19,5 +22,8 @@ private:
   Leg rightLeg;
   Face face;
 };
+
+} // namespace view
+} // namespace eo
 
 #endif /* end of include guard: BallMan_h */

@@ -3,6 +3,9 @@
 
 #include <opencv2/core/core.hpp>
 
+namespace eo {
+namespace capture {
+
 // Interface for all captures
 class AbstractCapture {
 public:
@@ -34,5 +37,8 @@ private:
   virtual bool do_hasNewImage() = 0;
   virtual const cv::Mat &do_getCvImage() = 0;
 };
+
+} // namespace capture
+} // namespace eo
 
 #endif /* end of include guard: capture_AbstractCapture_h */

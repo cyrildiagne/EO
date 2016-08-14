@@ -17,6 +17,9 @@
 using namespace Magnum;
 using namespace Magnum::Primitives;
 
+namespace eo {
+namespace view {
+
 void MatView::setup() {
   // setup mesh
   const Trade::MeshData2D square =
@@ -67,3 +70,6 @@ void MatView::draw() {
       .setNumChannels(numChannels);
   mesh.draw(shader);
 }
+
+} // namespace view
+} // namespace eo

@@ -1,5 +1,8 @@
 #include "view/ballman/Face.h"
 
+namespace eo {
+namespace view {
+
 void Face::setup() {
   leftEye = std::unique_ptr<Line>(new Circle(8, 20));
   rightEye = std::unique_ptr<Line>(new Circle(8, 20));
@@ -27,3 +30,6 @@ void Face::draw() {
   rightEye->draw();
   mouth->draw();
 }
+
+} // namespace view
+} // namespace eo

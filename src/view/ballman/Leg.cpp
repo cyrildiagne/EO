@@ -1,5 +1,8 @@
 #include "view/ballman/Leg.h"
 
+namespace eo {
+namespace view {
+
 Leg::Leg() : gravity(0.0), segmentLength(5) {}
 
 void Leg::setup(int numSegments) {
@@ -59,3 +62,6 @@ void Leg::applyUnitaryDistanceRelaxation(VerletPoint &p,
     p -= (dstFrom - segmentLength * scale.x()) * (d / dstFrom) * 0.5;
   }
 }
+
+} // namespace view
+} // namespace eo

@@ -11,6 +11,9 @@
 
 using namespace Magnum;
 
+namespace eo {
+namespace view {
+
 class Line {
 public:
   Line();
@@ -29,5 +32,8 @@ private:
   Mesh mesh;
   LineShader shader;
 };
+
+} // namespace view
+} // namespace eo
 
 #endif /* end of include guard: Line_h */

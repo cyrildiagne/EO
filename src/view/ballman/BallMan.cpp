@@ -4,6 +4,9 @@
 
 using namespace Magnum;
 
+namespace eo {
+namespace view {
+
 void BallMan::setup() {
   // setup body
   body.setup(100, 64);
@@ -50,3 +53,6 @@ void BallMan::draw() {
   // draw face
   face.draw();
 }
+
+} // namespace view
+} // namespace eo

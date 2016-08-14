@@ -3,6 +3,9 @@
 #include <Magnum/DefaultFramebuffer.h>
 #include <Magnum/MeshTools/Interleave.h>
 
+namespace eo {
+namespace view {
+
 Line::Line()
     : thickness(15.f), color{1.f, 1.f, 1.f}, scale{1.f, 1.f},
       position{0.f, 0.f} {
@@ -60,3 +63,6 @@ std::vector<Vector2> Line::computeNormals(const std::vector<Vector2> &pts) {
   // return vector
   return normals;
 }
+
+} // namespace view
+} // namespace eo

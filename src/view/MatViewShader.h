@@ -7,6 +7,9 @@
 
 using namespace Magnum;
 
+namespace eo {
+namespace view {
+
 class MatViewShader : public AbstractShaderProgram {
 public:
   typedef Attribute<0, Vector2> Position;
@@ -34,5 +37,8 @@ public:
 private:
   enum : Int { TextureLayer = 0 };
 };
+
+} // namespace view
+} // namespace eo
 
 #endif /* end of include guard: MatViewShader_h */

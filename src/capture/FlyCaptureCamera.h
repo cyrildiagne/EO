@@ -6,6 +6,9 @@
 
 #include "capture/AbstractCapture.h"
 
+namespace eo {
+namespace capture {
+
 class FlyCaptureCamera : public AbstractCapture {
 public:
   FlyCaptureCamera() : isImageNew(false) {}
@@ -29,5 +32,8 @@ private:
   bool isImageNew;
   void updateCvImage();
 };
+
+} // namespace capture
+} // namespace eo
 
 #endif /* end of include guard: FlyCaptureCamera_h */

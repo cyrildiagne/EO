@@ -12,6 +12,9 @@
 
 using namespace Magnum;
 
+namespace eo {
+namespace view {
+
 class VerletPoint : public Vector2 {
 public:
   VerletPoint(bool isPinned = false) : isPinned(isPinned) {}
@@ -34,5 +37,8 @@ private:
   void applyUnitaryVerletIntegration(VerletPoint &p, float t);
   void applyUnitaryDistanceRelaxation(VerletPoint &p, const VerletPoint &from);
 };
+
+} // namespace view
+} // namespace eo
 
 #endif /* end of include guard: Leg_h */

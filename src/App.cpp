@@ -15,6 +15,12 @@
 
 using namespace Magnum;
 
+namespace eo {
+
+using namespace view;
+using namespace tracking;
+using namespace capture;
+
 class App : public Platform::Application {
 public:
   explicit App(const Arguments &arguments);
@@ -28,7 +34,7 @@ private:
   Timeline timeline;
   MatView MatView;
   std::unique_ptr<AbstractCapture> capture;
-  tracking::BallTracker ballTracker;
+  BallTracker ballTracker;
   BallMan ballman;
   bool debugMode;
   float ellapsedTime;
@@ -148,8 +154,9 @@ void App::keyPressEvent(KeyEvent &event) {
   }
   event.setAccepted(true);
 }
+}
 
 int main(int argc, char **argv) {
-  App app({argc, argv});
+  eo::App app({argc, argv});
   return app.exec();
 }

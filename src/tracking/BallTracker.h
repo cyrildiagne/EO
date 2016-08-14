@@ -4,6 +4,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+namespace eo {
 namespace tracking {
 
 struct Circle {
@@ -17,7 +18,7 @@ class BallTracker {
 public:
   enum FrameId { Input, Resize, HSV, Threshold, Morph };
   void setup();
-  void update(const cv::Mat frame);
+  void update(const cv::Mat &frame);
   std::vector<Circle> circles;
   double getTrackTime() { return trackTime; }
   // returns the lastest frame of currFrameId
@@ -36,7 +37,11 @@ private:
   float rescale;
   // store chrono result
   double trackTime;
+  // detect
+  void detect(const cv::Mat &frame);
 };
-}
+
+} // namespace eo
+} // namespace tracking
 
 #endif /* end of include guard: BallTracker_h */

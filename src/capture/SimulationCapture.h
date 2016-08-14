@@ -3,6 +3,9 @@
 
 #include "capture/AbstractCapture.h"
 
+namespace eo {
+namespace capture {
+
 class SynthCircle {
 public:
   SynthCircle(cv::Point p, float r, cv::Point s)
@@ -30,5 +33,8 @@ private:
   bool isImageNew;
   std::vector<SynthCircle> circles;
 };
+
+} // namespace eo
+} // namespace capture
 
 #endif /* end of include guard: capture_SimulationCapture_h */

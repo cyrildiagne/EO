@@ -5,6 +5,9 @@
 #include <Magnum/Shader.h>
 #include <Magnum/Version.h>
 
+namespace eo {
+namespace view {
+
 MatViewShader::MatViewShader() {
   MAGNUM_ASSERT_VERSION_SUPPORTED(Version::GL330);
 
@@ -24,3 +27,6 @@ MatViewShader::MatViewShader() {
 
   setUniform(uniformLocation("textureData"), TextureLayer);
 }
+
+} // namespace view
+} // namespace eo

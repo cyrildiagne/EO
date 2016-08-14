@@ -13,6 +13,9 @@
 
 using namespace Magnum;
 
+namespace eo {
+namespace view {
+
 class Face {
 public:
   void setup();
@@ -24,5 +27,8 @@ private:
   std::unique_ptr<Line> rightEye;
   std::unique_ptr<Line> mouth;
 };
+
+} // namespace view
+} // namespace eo
 
 #endif /* end of include guard: view_ballman_Face_h */

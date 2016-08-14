@@ -10,6 +10,9 @@
 
 using namespace Magnum;
 
+namespace eo {
+namespace view {
+
 struct LineShader : AbstractShaderProgram {
   typedef Attribute<0, Vector2> Position;
   typedef Attribute<1, Vector2> Normal;
@@ -73,5 +76,8 @@ void main() {
     return *this;
   }
 };
+
+} // namespace view
+} // namespace eo
 
 #endif /* end of include guard: LineShader_h */

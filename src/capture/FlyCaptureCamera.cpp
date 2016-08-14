@@ -7,6 +7,9 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+namespace eo {
+namespace capture {
+
 FlyCaptureCamera::~FlyCaptureCamera() {
   if (!camera.IsConnected()) {
     return;
@@ -133,3 +136,6 @@ void FlyCaptureCamera::updateCvImage() {
                     rgbImage.GetData(), rowBytes)
                 .clone();
 }
+
+} // namespace capture
+} // namespace eo

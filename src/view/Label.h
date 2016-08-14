@@ -7,6 +7,9 @@
 #include <Magnum/Text/DistanceFieldGlyphCache.h>
 #include <Magnum/Text/Renderer.h>
 
+namespace eo {
+namespace view {
+
 class Label {
 public:
   Label();
@@ -27,5 +30,7 @@ private:
 
   Magnum::Matrix3 projection;
 };
+} // namespace view
+} // namespace eo
 
 #endif /* end of include guard: Label_h */

@@ -12,6 +12,9 @@
 
 using namespace Magnum;
 
+namespace eo {
+namespace view {
+
 class Circle : public Line {
 public:
   Circle() {}
@@ -32,5 +35,8 @@ public:
   }
   float radius;
 };
+
+} // namespace view
+} // namespace eo
 
 #endif /* end of include guard: view_primitives_Circle_h */

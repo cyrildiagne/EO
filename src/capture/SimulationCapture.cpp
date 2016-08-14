@@ -5,6 +5,9 @@
 
 #include <opencv2/imgproc/imgproc.hpp>
 
+namespace eo {
+namespace capture {
+
 cv::Point SimulationCapture::mouse;
 
 SimulationCapture::SimulationCapture() : isImageNew(false) {}
@@ -19,7 +22,7 @@ bool SimulationCapture::do_setup() {
   //
   cv::Point center(cvImage.rows * 0.5, cvImage.cols * 0.5);
   for (int i = 0; i < 5; i++) {
-    float radius = r(d) * 100 + 30;
+    float radius = r(d) * 60 + 30;
     float sx = r(d) * 20 - 10;
     float sy = r(d) * 20 - 10;
     circles.push_back({center, radius, cv::Point2f{sy, sx}});
@@ -58,3 +61,6 @@ void SimulationCapture::do_saveImage(float scale) {
 bool SimulationCapture::do_hasNewImage() { return isImageNew; };
 
 const cv::Mat &SimulationCapture::do_getCvImage() { return cvImage; }
+
+} // namespace capture
+} // namespace eo

@@ -4,6 +4,9 @@
 
 using namespace Magnum;
 
+namespace eo {
+namespace view {
+
 Label::Label()
     : manager(MAGNUM_PLUGINS_FONT_DIR),
       cache(Vector2i(2048), Vector2i(512), 22) {}
@@ -47,3 +50,6 @@ void Label::draw() {
       .setSmoothness(0.075f);
   renderer->mesh().draw(shader);
 }
+
+} // namespace view
+} // namespace eo
