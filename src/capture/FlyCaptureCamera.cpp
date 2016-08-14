@@ -14,8 +14,7 @@ FlyCaptureCamera::~FlyCaptureCamera() {
   std::cout << "disconnecting camera.." << std::endl;
   FlyCapture2::Error error = camera.StopCapture();
   if (error != FlyCapture2::PGRERROR_OK) {
-    // This may fail when the camera was removed, so don't show
-    // an error message
+    std::cout << "could not stop capture" << std::endl;
   }
   // power off, 0x610 address doesn't seem to be accessible from a constant in
   // the SDK but works as indicated in the documentation
@@ -28,7 +27,10 @@ FlyCaptureCamera::~FlyCaptureCamera() {
   std::cout << "Camera disconnected." << std::endl;
 }
 
-bool FlyCaptureCamera::setup() {
+bool FlyCaptureCamera::do_hasNewImage() { return isImageNew; }
+const cv::Mat &FlyCaptureCamera::do_getCvImage() { return cvImage; }
+
+bool FlyCaptureCamera::do_setup() {
   FlyCapture2::Error error;
   // Connect the camera
   error = camera.Connect();
@@ -95,7 +97,7 @@ bool FlyCaptureCamera::setWhiteBalance(int red, int blue) {
   return true;
 }
 
-void FlyCaptureCamera::update() {
+void FlyCaptureCamera::do_update() {
   isImageNew = false;
   FlyCapture2::Error error = camera.RetrieveBuffer(&rawImage);
   if (error != FlyCapture2::PGRERROR_OK) {
@@ -106,7 +108,7 @@ void FlyCaptureCamera::update() {
   }
 }
 
-void FlyCaptureCamera::saveImage(float scale) {
+void FlyCaptureCamera::do_saveImage(float scale) {
   cv::Mat resizedFrame;
   resizedFrame.create(cvImage.rows * scale, cvImage.cols * scale, CV_8UC3);
   cv::resize(cvImage, resizedFrame, resizedFrame.size(), 0, 0, cv::INTER_AREA);

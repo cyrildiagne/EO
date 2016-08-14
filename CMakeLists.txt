@@ -23,6 +23,8 @@ add_executable(EO
   src/App.cpp
   src/view/MatViewShader.cpp
   src/view/MatView.cpp
+  src/capture/AbstractCapture.cpp
+  src/capture/SimulationCapture.cpp
   src/capture/FlyCaptureCamera.cpp
   src/tracking/BallTracker.cpp
   src/view/Label.cpp

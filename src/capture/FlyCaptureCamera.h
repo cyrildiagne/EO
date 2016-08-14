@@ -4,19 +4,25 @@
 #include "flycapture/FlyCapture2.h"
 #include <opencv2/core/core.hpp>
 
-class FlyCaptureCamera {
+#include "capture/AbstractCapture.h"
+
+class FlyCaptureCamera : public AbstractCapture {
 public:
   FlyCaptureCamera() : isImageNew(false) {}
-  ~FlyCaptureCamera();
-  bool setup();
-  void update();
+  virtual ~FlyCaptureCamera();
+
+  // specifics
   bool setProperty(FlyCapture2::PropertyType type, float value);
   bool setWhiteBalance(int red, int blue);
-  void saveImage(float scale);
-  bool hasNewImage() { return isImageNew; };
-  const cv::Mat &getCvImage() { return cvImage; }
 
 private:
+  // interface implementation
+  bool do_setup() final;
+  void do_update() final;
+  void do_saveImage(float scale) final;
+  bool do_hasNewImage() final;
+  const cv::Mat &do_getCvImage() final;
+  // properties
   FlyCapture2::Camera camera;
   FlyCapture2::Image rawImage;
   cv::Mat cvImage;

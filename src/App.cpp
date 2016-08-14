@@ -7,6 +7,7 @@
 #include <Magnum/Timeline.h>
 
 #include "capture/FlyCaptureCamera.h"
+#include "capture/SimulationCapture.h"
 #include "tracking/BallTracker.h"
 #include "view/Label.h"
 #include "view/MatView.h"
@@ -26,7 +27,7 @@ private:
   Label fpsView;
   Timeline timeline;
   MatView MatView;
-  std::unique_ptr<FlyCaptureCamera> fcCamera;
+  std::unique_ptr<AbstractCapture> capture;
   tracking::BallTracker ballTracker;
   Vector2i mouse;
   BallMan ballman;
@@ -40,14 +41,14 @@ App::App(const Arguments &arguments)
                          .setWindowFlags(Configuration::WindowFlag::Fullscreen)
                          .setTitle("EO beta")
                          .setSize({1920, 1080})),
-      fcCamera(new FlyCaptureCamera) {
+      capture(new SimulationCapture) {
   ellapsedTime = 0.f;
   debugMode = false;
   fpsView.setup();
   // setup flycapture cam
-  bool isAvailable = fcCamera->setup();
+  bool isAvailable = capture->setup();
   if (!isAvailable) {
-    fcCamera = nullptr;
+    capture = nullptr;
   }
   // camera view
   MatView.setup();
@@ -71,10 +72,10 @@ void App::tickEvent() {
   Vector2i size = defaultFramebuffer.viewport().size();
   float screenScale = static_cast<float>(size.x()) / 1280;
   // update camera
-  if (fcCamera) {
-    fcCamera->update();
-    if (fcCamera->hasNewImage()) {
-      ballTracker.update(fcCamera->getCvImage());
+  if (capture) {
+    capture->update();
+    if (capture->hasNewImage()) {
+      ballTracker.update(capture->getCvImage());
     }
   } else {
     // use a mouse controlled circle if no camera is connected
@@ -103,8 +104,8 @@ void App::drawEvent() {
   // update display
   defaultFramebuffer.clear(FramebufferClear::Color);
   // draw our content
-  if (fcCamera) {
-    if (fcCamera->hasNewImage()) {
+  if (capture) {
+    if (capture->hasNewImage()) {
       MatView.updateTexture(ballTracker.getCurrFrame());
     }
     MatView.draw();
@@ -133,7 +134,7 @@ void App::mouseMoveEvent(MouseMoveEvent &event) {
 void App::keyPressEvent(KeyEvent &event) {
   if (event.key() == KeyEvent::Key::S) {
     // save image
-    fcCamera->saveImage(0.5);
+    capture->saveImage(0.5);
   } else if (event.key() == KeyEvent::Key::Space) {
     ballTracker.setNextFrameId();
   } else if (event.key() == KeyEvent::Key::D) {
