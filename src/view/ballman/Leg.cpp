@@ -5,10 +5,10 @@ namespace view {
 
 Leg::Leg() : gravity(0.0), segmentLength(5) {}
 
-void Leg::setup(int numSegments) {
-  pts.push_back(VerletPoint(true));
+void Leg::setup(Vector2 pos, int numSegments) {
+  pts.push_back(VerletPoint(pos, true));
   for (int i = 0; i < numSegments; i++) {
-    pts.push_back(VerletPoint());
+    pts.push_back(VerletPoint(pos));
   }
 }
 

@@ -17,7 +17,8 @@ namespace view {
 
 class VerletPoint : public Vector2 {
 public:
-  VerletPoint(bool isPinned = false) : isPinned(isPinned) {}
+  VerletPoint(Vector2 pos, bool isPinned = false)
+      : Vector2(pos), prev(pos), isPinned(isPinned) {}
   Vector2 prev;
   bool isPinned;
 };
@@ -25,7 +26,7 @@ public:
 class Leg : public Line {
 public:
   Leg();
-  void setup(int numSegments = 15);
+  void setup(Vector2 pos, int numSegments = 15);
   void update(Vector2 pos, float t);
 
 private:

@@ -8,15 +8,17 @@ using namespace Magnum;
 namespace eo {
 namespace view {
 
-void BallMan::setup() {
+void BallMan::setup(Vector2 p, float radius) {
   alive = true;
   // setup body
   body.setup(100, 64);
+  // radius should be used to accurately initialize the legs like in update
+  (void)radius;
   // setup arms & legs
-  leftArm.setup(20);
-  rightArm.setup(20);
-  leftLeg.setup();
-  rightLeg.setup();
+  leftArm.setup(p, 20);
+  rightArm.setup(p, 20);
+  leftLeg.setup(p);
+  rightLeg.setup(p);
   // setup face
   face.setup();
   // set random color;

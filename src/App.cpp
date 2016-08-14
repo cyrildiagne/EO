@@ -108,15 +108,17 @@ void App::updateBallMen(const std::vector<FollowedCircle> &circles) {
   // loop through all tracked circles
   for (const tracking::FollowedCircle &c : circles) {
     auto ball = ballmen.find(c.label);
+    // retrieve position & radius
+    const Vector2 position = Vector2(c.circle.x, c.circle.y) * screenScale;
+    const float radius = c.circle.radius * screenScale;
     // circle needs a new character
     if (ball == ballmen.end()) {
       ballmen[c.label] = std::unique_ptr<BallMan>(new BallMan);
-      ballmen[c.label]->setup();
+      ballmen[c.label]->setup(position, radius);
       ball = ballmen.find(c.label);
     }
     // update ball
-    ball->second->update(Vector2(c.circle.x, c.circle.y) * screenScale,
-                         c.circle.radius * screenScale, ellapsedTime);
+    ball->second->update(position, radius, ellapsedTime);
     ball->second->alive = true;
   }
   // remove characters that don't have circles anymore

@@ -11,7 +11,7 @@ namespace view {
 class BallMan {
 public:
   BallMan(){};
-  void setup();
+  void setup(Vector2 p, float radius);
   void update(Vector2 p, float radius, float t);
   void draw();
 
