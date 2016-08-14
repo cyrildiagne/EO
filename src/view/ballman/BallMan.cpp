@@ -57,6 +57,9 @@ void BallMan::update(Vector2 p, float radius, float t) {
 }
 
 void BallMan::draw() {
+  if (!visible) {
+    return;
+  }
   // draw body
   body.draw();
   // draw arms & legs

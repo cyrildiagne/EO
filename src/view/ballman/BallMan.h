@@ -10,12 +10,14 @@ namespace view {
 
 class BallMan {
 public:
-  BallMan(){};
+  BallMan() : visible(true){};
   void setup(Vector2 p, float radius);
   void update(Vector2 p, float radius, float t);
   void draw();
 
   void setColor(Magnum::Color3 color);
+
+  bool visible;
 
 private:
   Circle body;

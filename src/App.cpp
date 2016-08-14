@@ -120,6 +120,8 @@ void App::updateBallMen(const std::vector<FollowedCircle> &circles) {
       if (it != deadBallMen.end()) {
         deadBallMen.erase(it);
       }
+      // and sync visibility status
+      ball->second->visible = (c.numUpdatesMissing == 0);
     }
     // update ball
     ball->second->update(position, radius, ellapsedTime);
