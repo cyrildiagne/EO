@@ -1,9 +1,9 @@
 #include "capture/SimulationCapture.h"
 
 #include <iostream>
-#include <random>
-
 #include <opencv2/imgproc/imgproc.hpp>
+
+#include "utils.h"
 
 namespace eo {
 namespace capture {
@@ -15,16 +15,12 @@ SimulationCapture::~SimulationCapture() {}
 
 bool SimulationCapture::do_setup() {
   cvImage = cv::Mat::zeros(1024, 1280, CV_8UC3);
-  // prepare random distribution
-  std::random_device rd;
-  std::mt19937 d(rd());
-  std::uniform_real_distribution<> r(0, 1);
   //
   cv::Point center(cvImage.rows * 0.5, cvImage.cols * 0.5);
   for (int i = 0; i < 5; i++) {
-    float radius = r(d) * 60 + 30;
-    float sx = r(d) * 20 - 10;
-    float sy = r(d) * 20 - 10;
+    float radius = utils::random(30.f, 90.f);
+    float sx = utils::random(-10, 10);
+    float sy = utils::random(-10, 10);
     circles.push_back({center, radius, cv::Point2f{sy, sx}});
   }
   return true;
