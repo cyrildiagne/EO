@@ -53,6 +53,11 @@ void BallFollower::process(const std::vector<DetectedCircle> &detected) {
       matchedDetected[i] = true;
       matchedPrevious[j] = true;
       // add to circles vector
+      previous[j].velocity = {
+          detected[i].x - previous[j].circle.x,
+          detected[i].y - previous[j].circle.y,
+          detected[i].radius - previous[j].circle.radius,
+      };
       previous[j].circle = detected[i];
       previous[j].numUpdatesMissing = 0;
       circles.push_back(previous[j]);
@@ -64,6 +69,9 @@ void BallFollower::process(const std::vector<DetectedCircle> &detected) {
     if (!matchedPrevious[j]) {
       if (++previous[j].numUpdatesMissing < 30) {
         // TODO: compute velocity and apply to position+radius based on history
+        // previous[j].circle.x += previous[j].velocity[0];
+        // previous[j].circle.y += previous[j].velocity[1];
+        // previous[j].circle.radius += previous[j].velocity[2];
         circles.push_back(previous[j]);
       }
     }

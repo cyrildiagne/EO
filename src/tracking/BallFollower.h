@@ -11,6 +11,9 @@ struct FollowedCircle {
       : label(label), circle{circle}, numUpdatesMissing(0) {}
   std::string label;
   DetectedCircle circle;
+  // velocity can be used to increase the matching accuracy and is applied on
+  // items that have been missing for a few frames
+  std::vector<float> velocity;
   // tracks the number of frame that this circle has been missing
   int numUpdatesMissing;
 };
