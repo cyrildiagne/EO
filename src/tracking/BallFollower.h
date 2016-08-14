@@ -6,13 +6,18 @@
 namespace eo {
 namespace tracking {
 
+struct FollowedCircle {
+  FollowedCircle(std::string label, DetectedCircle circle)
+      : label(label), circle{circle} {}
+  std::string label;
+  DetectedCircle circle;
+};
+
 class BallFollower {
 public:
   BallFollower(){};
-  void process(const std::vector<Circle> &circles) {
-    if (circles.size()) {
-    }
-  }
+  void process(const std::vector<DetectedCircle> &detected);
+  std::vector<FollowedCircle> circles;
 };
 
 } // namespace eo

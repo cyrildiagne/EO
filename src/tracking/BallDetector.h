@@ -6,8 +6,8 @@
 namespace eo {
 namespace tracking {
 
-struct Circle {
-  Circle(float x, float y, float radius) : x(x), y(y), radius(radius) {}
+struct DetectedCircle {
+  DetectedCircle(float x, float y, float radius) : x(x), y(y), radius(radius) {}
   float x;
   float y;
   float radius;
@@ -19,7 +19,7 @@ public:
   // detect
   void process(const cv::Mat &frame);
   // detected circles
-  std::vector<Circle> circles;
+  std::vector<DetectedCircle> circles;
   // intermediate mats
   cv::Mat resizedFrame, hsvFrame, threshFrame, morphFrame;
   // rescale scales the input frame before processing to speed up

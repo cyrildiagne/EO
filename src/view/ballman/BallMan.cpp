@@ -8,6 +8,7 @@ namespace eo {
 namespace view {
 
 void BallMan::setup() {
+  alive = true;
   // setup body
   body.setup(100, 64);
   // setup arms & legs

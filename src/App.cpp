@@ -30,12 +30,15 @@ private:
   void drawEvent() override;
   void mouseMoveEvent(MouseMoveEvent &event) override;
   void keyPressEvent(KeyEvent &event) override;
+  //
+  void updateBallMen(const std::vector<FollowedCircle> &circles);
+  // properties
   Label fpsView;
   Timeline timeline;
   MatView MatView;
   std::unique_ptr<AbstractCapture> capture;
   BallTracker ballTracker;
-  BallMan ballman;
+  std::map<std::string, std::unique_ptr<BallMan>> ballmen;
   bool debugMode;
   float ellapsedTime;
 };
@@ -59,8 +62,6 @@ App::App(const Arguments &arguments)
   MatView.setup();
   // ball tracker
   ballTracker.setup();
-  // ballmen setup
-  ballman.setup();
   // enable alpha blending
   Renderer::enable(Renderer::Feature::Blending);
   Renderer::setBlendFunction(Renderer::BlendFunction::SourceAlpha,
@@ -74,8 +75,6 @@ App::App(const Arguments &arguments)
 
 void App::tickEvent() {
   ellapsedTime += timeline.previousFrameDuration();
-  Vector2i size = defaultFramebuffer.viewport().size();
-  float screenScale = static_cast<float>(size.x()) / 1280;
   // update camera
   if (capture) {
     capture->update();
@@ -83,19 +82,51 @@ void App::tickEvent() {
       ballTracker.update(capture->getCvImage());
     }
   }
-  for (const tracking::Circle &c : ballTracker.detector.circles) {
-    ballman.update(Vector2(c.x, c.y) * screenScale, c.radius * screenScale,
-                   ellapsedTime);
-  }
+  // update characters
+  updateBallMen(ballTracker.follower.circles);
   // update framerate label
   if (debugMode) {
     const float fps = 1.0f / timeline.previousFrameDuration();
     std::ostringstream text;
     text << Int(fps) << "fps" << std::endl
          << "tracking: " << Int(ballTracker.getTrackTime()) << "ms" << std::endl
+         << "detected: " << ballTracker.follower.circles.size() << std::endl
+         << "balls: " << ballmen.size() << std::endl
          << "thresh: " << ballTracker.detector.minHue << "-"
          << ballTracker.detector.maxHue;
     fpsView.setText(text.str());
+  }
+}
+
+void App::updateBallMen(const std::vector<FollowedCircle> &circles) {
+  Vector2i size = defaultFramebuffer.viewport().size();
+  float screenScale = static_cast<float>(size.x()) / 1280;
+  // save all the ballmen that have been updated here
+  for (auto &b : ballmen) {
+    b.second->alive = false;
+  }
+  // loop through all tracked circles
+  for (const tracking::FollowedCircle &c : ballTracker.follower.circles) {
+    auto ball = ballmen.find(c.label);
+    // circle already has character
+    if (ball != ballmen.end()) {
+      ball->second->update(Vector2(c.circle.x, c.circle.y) * screenScale,
+                           c.circle.radius * screenScale, ellapsedTime);
+      ball->second->alive = true;
+    } else {
+      // circle needs a new character
+      ballmen[c.label] = std::unique_ptr<BallMan>(new BallMan);
+      ballmen[c.label]->setup();
+    }
+  }
+  // remove characters that don't have circles anymore
+  auto it = ballmen.begin();
+  while (it != ballmen.end()) {
+    if (!it->second->alive) {
+      it = ballmen.erase(it);
+    } else {
+      ++it;
+    }
   }
 }
 
@@ -114,9 +145,8 @@ void App::drawEvent() {
     fpsView.draw();
   }
   // draw ballmen
-  for (const tracking::Circle &c : ballTracker.detector.circles) {
-    (void)c;
-    ballman.draw();
+  for (auto &b : ballmen) {
+    b.second->draw();
   }
   // swap buffers
   swapBuffers();

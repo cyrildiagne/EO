@@ -53,7 +53,8 @@ void BallDetector::process(const cv::Mat &frame) {
     }
     float cx = center.x - resizedFrame.cols * 0.5;
     float cy = center.y - resizedFrame.rows * 0.5;
-    circles.push_back(Circle{-cx / rescale, cy / rescale, radius / rescale});
+    circles.push_back(
+        DetectedCircle{-cx / rescale, cy / rescale, radius / rescale});
   }
 }
 

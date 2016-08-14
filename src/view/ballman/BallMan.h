@@ -10,9 +10,13 @@ namespace view {
 
 class BallMan {
 public:
+  BallMan(){};
   void setup();
   void update(Vector2 p, float radius, float t);
   void draw();
+
+  // helps keeping track of characters without tracked circles
+  bool alive;
 
 private:
   Circle body;

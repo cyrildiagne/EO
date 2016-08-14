@@ -27,6 +27,7 @@ add_executable(EO
   src/capture/SimulationCapture.cpp
   src/capture/FlyCaptureCamera.cpp
   src/tracking/BallDetector.cpp
+  src/tracking/BallFollower.cpp
   src/tracking/BallTracker.cpp
   src/view/Label.cpp
   src/view/ballman/BallMan.cpp

@@ -36,7 +36,7 @@ void Label::loadFont() {
                               "UVWXYZ0123456789:-+,.!° ");
   renderer.reset(
       new Text::Renderer2D(*font, cache, 0.035f, Text::Alignment::TopRight));
-  renderer->reserve(40, BufferUsage::DynamicDraw, BufferUsage::StaticDraw);
+  renderer->reserve(100, BufferUsage::DynamicDraw, BufferUsage::StaticDraw);
 }
 
 void Label::draw() {
