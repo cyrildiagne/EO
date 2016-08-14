@@ -9,7 +9,6 @@ namespace eo {
 namespace view {
 
 void BallMan::setup(Vector2 p, float radius) {
-  alive = true;
   // setup body
   body.setup(100, 64);
   // radius should be used to accurately initialize the legs like in update

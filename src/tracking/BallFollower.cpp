@@ -29,7 +29,7 @@ void BallFollower::process(const std::vector<DetectedCircle> &detected) {
     for (int j = 0; j < m; j++) {
       const float d = GetFollowDistanceSquared(previous[j], detected[i]);
       if (d < maxDistance) {
-        all.push_back(MatchDistancePair{MatchPair{i, j}, d});
+        all.push_back({MatchPair{i, j}, d});
       }
     }
   }

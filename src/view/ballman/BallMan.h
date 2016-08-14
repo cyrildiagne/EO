@@ -17,9 +17,6 @@ public:
 
   void setColor(Magnum::Color3 color);
 
-  // helps keeping track of characters without tracked circles
-  bool alive;
-
 private:
   Circle body;
   Leg leftArm;
