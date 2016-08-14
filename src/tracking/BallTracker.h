@@ -1,47 +1,37 @@
-#ifndef BallTracker_h
-#define BallTracker_h
+#ifndef tracking_BallTracker_h
+#define tracking_BallTracker_h
 
 #include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+
+#include "tracking/BallDetector.h"
+#include "tracking/BallFollower.h"
 
 namespace eo {
 namespace tracking {
-
-struct Circle {
-  Circle(float x, float y, float radius) : x(x), y(y), radius(radius) {}
-  float x;
-  float y;
-  float radius;
-};
 
 class BallTracker {
 public:
   enum FrameId { Input, Resize, HSV, Threshold, Morph };
   void setup();
   void update(const cv::Mat &frame);
-  std::vector<Circle> circles;
   double getTrackTime() { return trackTime; }
   // returns the lastest frame of currFrameId
   const cv::Mat &getCurrFrame();
   void setNextFrameId();
-  // min and max HSV used for thresholding the input frame
-  int minHue, maxHue;
-  int minSaturation, maxSaturation;
-  int minValue, maxValue;
+  // detector finds blobs a cv frame
+  BallDetector detector;
+  // follower follows identities of the blobs
+  BallFollower follower;
 
 private:
   // latest processed frame depending on currFrameId
   cv::Mat currFrame;
   FrameId currFrameId;
-  // rescale scales the input frame before processing to speed up
-  float rescale;
   // store chrono result
   double trackTime;
-  // detect
-  void detect(const cv::Mat &frame);
 };
 
 } // namespace eo
 } // namespace tracking
 
-#endif /* end of include guard: BallTracker_h */
+#endif /* end of include guard: tracking_BallTracker_h */

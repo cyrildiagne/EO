@@ -83,7 +83,7 @@ void App::tickEvent() {
       ballTracker.update(capture->getCvImage());
     }
   }
-  for (const tracking::Circle &c : ballTracker.circles) {
+  for (const tracking::Circle &c : ballTracker.detector.circles) {
     ballman.update(Vector2(c.x, c.y) * screenScale, c.radius * screenScale,
                    ellapsedTime);
   }
@@ -93,7 +93,8 @@ void App::tickEvent() {
     std::ostringstream text;
     text << Int(fps) << "fps" << std::endl
          << "tracking: " << Int(ballTracker.getTrackTime()) << "ms" << std::endl
-         << "thresh: " << ballTracker.minHue << "-" << ballTracker.maxHue;
+         << "thresh: " << ballTracker.detector.minHue << "-"
+         << ballTracker.detector.maxHue;
     fpsView.setText(text.str());
   }
 }
@@ -113,7 +114,7 @@ void App::drawEvent() {
     fpsView.draw();
   }
   // draw ballmen
-  for (const tracking::Circle &c : ballTracker.circles) {
+  for (const tracking::Circle &c : ballTracker.detector.circles) {
     (void)c;
     ballman.draw();
   }
@@ -144,13 +145,13 @@ void App::keyPressEvent(KeyEvent &event) {
   } else if (event.key() == KeyEvent::Key::D) {
     debugMode = !debugMode;
   } else if (event.key() == KeyEvent::Key::Left) {
-    ballTracker.minHue -= 1;
+    ballTracker.detector.minHue -= 1;
   } else if (event.key() == KeyEvent::Key::Right) {
-    ballTracker.minHue += 1;
+    ballTracker.detector.minHue += 1;
   } else if (event.key() == KeyEvent::Key::Down) {
-    ballTracker.maxHue -= 1;
+    ballTracker.detector.maxHue -= 1;
   } else if (event.key() == KeyEvent::Key::Up) {
-    ballTracker.maxHue += 1;
+    ballTracker.detector.maxHue += 1;
   }
   event.setAccepted(true);
 }
