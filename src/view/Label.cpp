@@ -35,7 +35,7 @@ void Label::loadFont() {
   font->fillGlyphCache(cache, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRST"
                               "UVWXYZ0123456789:-+,.!° ");
   renderer.reset(
-      new Text::Renderer2D(*font, cache, 0.035f, Text::Alignment::TopRight));
+      new Text::Renderer2D(*font, cache, 0.025f, Text::Alignment::TopRight));
   renderer->reserve(100, BufferUsage::DynamicDraw, BufferUsage::StaticDraw);
 }
 
