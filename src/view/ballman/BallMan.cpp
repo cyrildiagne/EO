@@ -1,5 +1,6 @@
 #include "view/ballman/BallMan.h"
 
+#include "utils.h"
 #include <Magnum/Math/Vector.h>
 
 using namespace Magnum;
@@ -18,6 +19,17 @@ void BallMan::setup() {
   rightLeg.setup();
   // setup face
   face.setup();
+  // set random color;
+  setColor(Color3{utils::random(1.f), utils::random(1.f), utils::random(1.f)});
+}
+
+void BallMan::setColor(Magnum::Color3 color) {
+  leftArm.color = color;
+  rightArm.color = color;
+  leftLeg.color = color;
+  rightLeg.color = color;
+  body.color = color;
+  face.setColor(color);
 }
 
 void BallMan::update(Vector2 p, float radius, float t) {

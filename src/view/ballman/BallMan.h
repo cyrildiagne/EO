@@ -15,6 +15,8 @@ public:
   void update(Vector2 p, float radius, float t);
   void draw();
 
+  void setColor(Magnum::Color3 color);
+
   // helps keeping track of characters without tracked circles
   bool alive;
 

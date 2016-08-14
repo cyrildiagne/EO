@@ -31,5 +31,11 @@ void Face::draw() {
   mouth->draw();
 }
 
+void Face::setColor(Magnum::Color3 color) {
+  leftEye->color = color;
+  rightEye->color = color;
+  mouth->color = color;
+}
+
 } // namespace view
 } // namespace eo

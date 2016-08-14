@@ -22,6 +22,8 @@ public:
   void update(Vector2 p, Vector2 s);
   void draw();
 
+  void setColor(Magnum::Color3 color);
+
 private:
   std::unique_ptr<Line> leftEye;
   std::unique_ptr<Line> rightEye;
