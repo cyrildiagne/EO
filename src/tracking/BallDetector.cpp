@@ -34,12 +34,24 @@ void BallDetector::process(const cv::Mat &frame) {
   cv::Mat element2 = getStructuringElement(
       morph_elem, cv::Size(2 * msize + 1, 2 * msize + 1), pos);
   cv::morphologyEx(morphFrame, morphFrame, cv::MORPH_CLOSE, element2);
+
   // find contours
   typedef std::vector<cv::Point> PointVec;
   std::vector<PointVec> contours;
   std::vector<cv::Vec4i> hierarchy;
   cv::findContours(morphFrame.clone(), contours, hierarchy, CV_RETR_EXTERNAL,
                    CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+
+  // compute hough circles as backup for overlapping balls
+  cv::GaussianBlur(morphFrame, morphFrame, cv::Size(3, 3), 2, 2);
+  cv::Mat hghimg = morphFrame.clone();
+  std::vector<cv::Vec3f> hghCircles;
+  cv::HoughCircles(hghimg, hghCircles, CV_HOUGH_GRADIENT, 1, 10, 200, 20, 0, 0);
+  for (size_t i = 0; i < hghCircles.size(); i++) {
+    cv::circle(frame, cv::Point(hghCircles[i][0], hghCircles[i][1]) / rescale,
+               hghCircles[i][2] / rescale, cv::Scalar(0, 0, 255), 3);
+  }
+
   // find
   circles.clear();
   int total = contours.size();
@@ -50,7 +62,33 @@ void BallDetector::process(const cv::Mat &frame) {
     cv::minEnclosingCircle(static_cast<cv::Mat>(contours[i]), center, radius);
     if (radius < 5) {
       continue;
+    } // otherwise compare radius to ball area
+    else if (3.14159 * radius * radius > cv::contourArea(contours[i]) * 1.75) {
+      // look for hough circles inside the minEnclosingCircle
+      // for (size_t j = 0; j < hghCircles.size(); j++) {
+      //   const float hghX = hghCircles[i][0];
+      //   const float hghY = hghCircles[i][1];
+      //   const float hghRadius = hghCircles[i][2];
+      //   const float dx = hghX - center.x;
+      //   const float dy = hghY - center.y;
+      //   const float dist = sqrt(dx * dx + dy * dy);
+      //   if (dist < radius - hghRadius + 20) {
+      //     cv::circle(frame, cv::Point(hghX, hghY) / rescale,
+      //                hghRadius / rescale, cv::Scalar(0, 255, 0), 1);
+      //     float cx = hghX - resizedFrame.cols * 0.5;
+      //     float cy = hghY - resizedFrame.rows * 0.5;
+      //     circles.push_back(
+      //         DetectedCircle{-cx / rescale, cy / rescale, hghRadius /
+      //         rescale});
+      //   }
+      // }
+      cv::circle(frame, center / rescale, radius / rescale,
+                 cv::Scalar(255, 0, 0), 1);
+      continue;
     }
+    cv::circle(frame, center / rescale, radius / rescale, cv::Scalar(0, 255, 0),
+               1);
+
     float cx = center.x - resizedFrame.cols * 0.5;
     float cy = center.y - resizedFrame.rows * 0.5;
     circles.push_back(
