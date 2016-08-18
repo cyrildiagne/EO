@@ -61,7 +61,8 @@ void MatView::updateTexture(const cv::Mat img) {
 void MatView::draw() {
   Vector2i size = defaultFramebuffer.viewport().size();
   float viewportRatio = static_cast<float>(size.x()) / size.y();
-  float matRatio = 1280.f / 1080;
+  float matRatio =
+      static_cast<float>(texture.imageSize(0).x()) / texture.imageSize(0).y();
   // get projection
   Matrix3 projection =
       Matrix3::scaling(Vector2::yScale(viewportRatio / matRatio));
