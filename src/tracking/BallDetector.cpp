@@ -6,7 +6,7 @@ namespace eo {
 namespace tracking {
 
 BallDetector::BallDetector()
-    : rescale(0.25), minHue(20), maxHue(100), minSaturation(30),
+    : rescale(0.5), minHue(35), maxHue(110), minSaturation(30),
       maxSaturation(225), minValue(30), maxValue(255) {}
 
 void BallDetector::process(const cv::Mat &frame) {
