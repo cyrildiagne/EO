@@ -80,7 +80,7 @@ void App::tickEvent() {
   if (capture) {
     capture->update();
     if (capture->hasNewImage()) {
-      ballTracker.update(capture->getCvImage());
+      ballTracker.update(capture->getCvImage(), debugMode);
     }
   }
   // update characters
