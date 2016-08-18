@@ -41,7 +41,7 @@ private:
   BallMenController ballmen;
   BallTracker ballTracker;
   bool debugMode;
-  float ellapsedTime;
+  double ellapsedTime;
 };
 
 App::App(const Arguments &arguments)
