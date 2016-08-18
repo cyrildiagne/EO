@@ -9,6 +9,7 @@
 #include "capture/FlyCaptureCamera.h"
 #include "capture/SimulationCapture.h"
 #include "tracking/BallTracker.h"
+#include "utils.h"
 #include "view/Label.h"
 #include "view/MatView.h"
 #include "view/ballman/BallMan.h"
@@ -51,7 +52,7 @@ App::App(const Arguments &arguments)
                          .setSize({1920, 1080})),
       capture(new SimulationCapture) {
   ellapsedTime = 0.f;
-  debugMode = false;
+  debugMode = true;
   fpsView.setup();
   // setup flycapture cam
   bool isAvailable = capture->setup();
@@ -112,7 +113,13 @@ void App::updateBallMen(const std::vector<FollowedCircle> &circles) {
     // circle needs a new character
     if (ball == ballmen.end()) {
       ballmen[c.label] = std::shared_ptr<BallMan>(new BallMan);
-      ballmen[c.label]->setup(position, radius);
+      if (debugMode) {
+        Color3 color{utils::random(1.f), utils::random(1.f),
+                     utils::random(1.f)};
+        ballmen[c.label]->setup(position, radius, color);
+      } else {
+        ballmen[c.label]->setup(position, radius);
+      }
       ball = ballmen.find(c.label);
     } else {
       // otherwise remove the ball from the deadballs list

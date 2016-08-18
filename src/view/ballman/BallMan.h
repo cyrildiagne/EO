@@ -11,7 +11,7 @@ namespace view {
 class BallMan {
 public:
   BallMan() : visible(true){};
-  void setup(Vector2 p, float radius);
+  void setup(Vector2 p, float radius, Color3 color = {1.f, 0.f, 0.3f});
   void update(Vector2 p, float radius, float t);
   void draw();
 

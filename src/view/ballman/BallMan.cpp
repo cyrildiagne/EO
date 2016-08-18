@@ -1,6 +1,5 @@
 #include "view/ballman/BallMan.h"
 
-#include "utils.h"
 #include <Magnum/Math/Vector.h>
 
 using namespace Magnum;
@@ -8,7 +7,7 @@ using namespace Magnum;
 namespace eo {
 namespace view {
 
-void BallMan::setup(Vector2 p, float radius) {
+void BallMan::setup(Vector2 p, float radius, Color3 color) {
   // setup body
   body.setup(100, 64);
   // radius should be used to accurately initialize the legs like in update
@@ -20,8 +19,8 @@ void BallMan::setup(Vector2 p, float radius) {
   rightLeg.setup(p);
   // setup face
   face.setup();
-  // set random color;
-  setColor(Color3{utils::random(1.f), utils::random(1.f), utils::random(1.f)});
+  // set color;
+  setColor(color);
 }
 
 void BallMan::setColor(Magnum::Color3 color) {
