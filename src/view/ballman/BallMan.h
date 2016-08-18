@@ -11,6 +11,7 @@ namespace view {
 class BallMan {
 public:
   BallMan() : visible(true){};
+  ~BallMan();
   void setup(Vector2 p, float radius, Color3 color = {1.f, 0.f, 0.3f});
   void update(Vector2 p, float radius, float t);
   void draw();
@@ -18,8 +19,9 @@ public:
   void setColor(Magnum::Color3 color);
 
   bool visible;
+  Vector2 position;
+  float radius;
 
-private:
   Circle body;
   Leg leftArm;
   Leg rightArm;

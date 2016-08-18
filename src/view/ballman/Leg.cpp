@@ -3,7 +3,7 @@
 namespace eo {
 namespace view {
 
-Leg::Leg() : gravity(0.0), segmentLength(5) {}
+Leg::Leg() : targetLeg(nullptr), gravity(0.0), segmentLength(5) {}
 
 void Leg::setup(Vector2 pos, int numSegments) {
   pts.push_back(VerletPoint(pos, true));

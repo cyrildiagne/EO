@@ -26,7 +26,9 @@ void BallMenController::update(const std::vector<FollowedCircle> &circles,
     // circle needs a new character
     if (ball == ballmen.end()) {
       ballmen[c.label] = std::shared_ptr<BallMan>(new BallMan);
-      Color3 color{utils::random(1.f), utils::random(1.f), utils::random(1.f)};
+      // Color3 color{utils::random(1.f), utils::random(1.f),
+      // utils::random(1.f)};
+      Color3 color{1.f, 1.f, utils::random(1.f)};
       ballmen[c.label]->setup(position, radius, color);
       ball = ballmen.find(c.label);
     } else {
@@ -48,6 +50,67 @@ void BallMenController::update(const std::vector<FollowedCircle> &circles,
       ballmen.erase(it);
     }
   }
+  // update claps
+  updateClaps();
+}
+
+void BallMenController::updateClaps() {
+  // loop through all ball pairs
+  for (auto it = ballmen.begin(); it != ballmen.end(); ++it) {
+    // first check if character has leg attached
+    auto &b1 = it->second;
+    if (b1->leftArm.targetLeg) {
+      updateLegTarget(b1->leftArm);
+    }
+    if (b1->rightArm.targetLeg) {
+      updateLegTarget(b1->rightArm);
+    }
+    // look for new targets
+    for (auto jt = ballmen.begin(); jt != ballmen.end(); ++jt) {
+      // skip self
+      if (it == jt) {
+        continue;
+      }
+      auto &b2 = jt->second;
+      checkMatch(b1->leftArm, b2->leftArm);
+      checkMatch(b1->rightArm, b2->rightArm);
+      checkMatch(b1->leftArm, b2->rightArm);
+      checkMatch(b1->rightArm, b2->leftArm);
+    }
+  }
+}
+
+void BallMenController::checkMatch(Leg &l1, Leg &l2) {
+  // do not match arms tha are already paired
+  if (!l1.targetLeg && !l2.targetLeg) {
+    // check arms distance
+    if ((l1.pts[0] - l2.pts[0]).length() < 300) {
+      l1.targetLeg = &l2;
+      l2.targetLeg = &l1;
+    }
+  }
+  updateLegTarget(l1);
+}
+
+bool BallMenController::updateLegTarget(Leg &leg) {
+  if (!leg.targetLeg) {
+    return false;
+  }
+  const Vector2 shoulder = leg.pts[0];
+  const Vector2 targetShoulder = leg.targetLeg->pts[0];
+  if ((shoulder - targetShoulder).length() > 300) {
+    leg.targetLeg->targetLeg = nullptr;
+    leg.targetLeg = nullptr;
+    return false;
+  }
+  // stir respective hands toward target shoulder
+  leg.pts.back().x() = leg.pts.back().prev.x() = targetShoulder.x();
+  leg.pts.back().y() = leg.pts.back().prev.y() = targetShoulder.y();
+  leg.targetLeg->pts.back().x() = leg.targetLeg->pts.back().prev.x() =
+      shoulder.x();
+  leg.targetLeg->pts.back().y() = leg.targetLeg->pts.back().prev.y() =
+      shoulder.y();
+  return true;
 }
 
 void BallMenController::draw() {

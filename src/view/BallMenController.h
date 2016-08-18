@@ -14,10 +14,15 @@ public:
   BallMenController(){};
   void update(const std::vector<tracking::FollowedCircle> &circles, double dt);
   void draw();
+
   int getNum() { return ballmen.size(); }
 
 private:
   std::map<std::string, std::shared_ptr<BallMan>> ballmen;
+
+  void updateClaps();
+  void checkMatch(Leg &l1, Leg &l2);
+  bool updateLegTarget(Leg &leg);
 };
 
 } // namespace view

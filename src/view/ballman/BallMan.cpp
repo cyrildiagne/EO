@@ -7,8 +7,18 @@ using namespace Magnum;
 namespace eo {
 namespace view {
 
+BallMan::~BallMan() {
+  if (leftArm.targetLeg) {
+    leftArm.targetLeg->targetLeg = nullptr;
+  }
+  if (rightArm.targetLeg) {
+    rightArm.targetLeg->targetLeg = nullptr;
+  }
+}
+
 void BallMan::setup(Vector2 p, float radius, Color3 color) {
   // setup body
+  position = p;
   body.setup(100, 64);
   // radius should be used to accurately initialize the legs like in update
   (void)radius;
@@ -33,7 +43,9 @@ void BallMan::setColor(Magnum::Color3 color) {
 }
 
 void BallMan::update(Vector2 p, float radius, float t) {
+  position = p;
   float r = body.radius;
+  this->radius = radius;
   Vector2 s = Vector2{radius / r, radius / r};
   // update arms
   leftArm.update(Vector2(p.x() - radius, p.y()), t);

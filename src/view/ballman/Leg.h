@@ -29,9 +29,11 @@ public:
   void setup(Vector2 pos, int numSegments = 15);
   void update(Vector2 pos, float t);
 
+  std::vector<VerletPoint> pts;
+  Leg *targetLeg;
+
 private:
   Vector2 origin;
-  std::vector<VerletPoint> pts;
   float gravity;
   float segmentLength;
 
