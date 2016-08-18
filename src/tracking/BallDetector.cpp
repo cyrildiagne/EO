@@ -6,10 +6,10 @@ namespace eo {
 namespace tracking {
 
 BallDetector::BallDetector()
-    : rescale(0.5), minHue(35), maxHue(110), minSaturation(30),
+    : rescale(0.25), minHue(35), maxHue(110), minSaturation(30),
       maxSaturation(225), minValue(30), maxValue(255) {}
 
-void BallDetector::process(const cv::Mat &frame) {
+void BallDetector::process(const cv::Mat &frame, bool bDebug) {
   // get scaled down copy
   if (resizedFrame.rows != frame.rows || resizedFrame.cols != frame.cols) {
     resizedFrame.create(frame.rows * rescale, frame.cols * rescale, CV_8UC3);
@@ -43,14 +43,18 @@ void BallDetector::process(const cv::Mat &frame) {
                    CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
   // compute hough circles as backup for overlapping balls
+  std::vector<cv::Vec3f> hghCircles;
+  /*
   cv::GaussianBlur(morphFrame, morphFrame, cv::Size(3, 3), 2, 2);
   cv::Mat hghimg = morphFrame.clone();
-  std::vector<cv::Vec3f> hghCircles;
   cv::HoughCircles(hghimg, hghCircles, CV_HOUGH_GRADIENT, 1, 10, 200, 20, 0, 0);
-  for (size_t i = 0; i < hghCircles.size(); i++) {
-    cv::circle(frame, cv::Point(hghCircles[i][0], hghCircles[i][1]) / rescale,
-               hghCircles[i][2] / rescale, cv::Scalar(0, 0, 255), 3);
+  if (bDebug) {
+    for (size_t i = 0; i < hghCircles.size(); i++) {
+      cv::circle(frame, cv::Point(hghCircles[i][0], hghCircles[i][1]) / rescale,
+                 hghCircles[i][2] / rescale, cv::Scalar(0, 0, 255), 3);
+    }
   }
+  */
 
   // find
   circles.clear();
@@ -63,31 +67,36 @@ void BallDetector::process(const cv::Mat &frame) {
     if (radius < 5) {
       continue;
     } // otherwise compare radius to ball area
-    else if (3.14159 * radius * radius > cv::contourArea(contours[i]) * 1.75) {
-      // look for hough circles inside the minEnclosingCircle
-      // for (size_t j = 0; j < hghCircles.size(); j++) {
-      //   const float hghX = hghCircles[i][0];
-      //   const float hghY = hghCircles[i][1];
-      //   const float hghRadius = hghCircles[i][2];
-      //   const float dx = hghX - center.x;
-      //   const float dy = hghY - center.y;
-      //   const float dist = sqrt(dx * dx + dy * dy);
-      //   if (dist < radius - hghRadius + 20) {
-      //     cv::circle(frame, cv::Point(hghX, hghY) / rescale,
-      //                hghRadius / rescale, cv::Scalar(0, 255, 0), 1);
-      //     float cx = hghX - resizedFrame.cols * 0.5;
-      //     float cy = hghY - resizedFrame.rows * 0.5;
-      //     circles.push_back(
-      //         DetectedCircle{-cx / rescale, cy / rescale, hghRadius /
-      //         rescale});
-      //   }
-      // }
+    // else if (3.14159 * radius * radius > cv::contourArea(contours[i]) * 1.75)
+    // {
+    //   // look for hough circles inside the minEnclosingCircle
+    //   for (size_t j = 0; j < hghCircles.size(); j++) {
+    //     const float hghX = hghCircles[i][0];
+    //     const float hghY = hghCircles[i][1];
+    //     const float hghRadius = hghCircles[i][2];
+    //     const float dx = hghX - center.x;
+    //     const float dy = hghY - center.y;
+    //     const float dist = sqrt(dx * dx + dy * dy);
+    //     if (dist < radius - hghRadius + 20) {
+    //       cv::circle(frame, cv::Point(hghX, hghY) / rescale,
+    //                  hghRadius / rescale, cv::Scalar(0, 255, 0), 1);
+    //       float cx = hghX - resizedFrame.cols * 0.5;
+    //       float cy = hghY - resizedFrame.rows * 0.5;
+    //       circles.push_back(
+    //           DetectedCircle{-cx / rescale, cy / rescale, hghRadius /
+    //           rescale});
+    //     }
+    //   }
+    //   if (bDebug) {
+    //     cv::circle(frame, center / rescale, radius / rescale,
+    //                cv::Scalar(255, 0, 0), 1);
+    //   }
+    //   continue;
+    // }
+    if (bDebug) {
       cv::circle(frame, center / rescale, radius / rescale,
-                 cv::Scalar(255, 0, 0), 1);
-      continue;
+                 cv::Scalar(0, 255, 0), 1);
     }
-    cv::circle(frame, center / rescale, radius / rescale, cv::Scalar(0, 255, 0),
-               1);
 
     float cx = center.x - resizedFrame.cols * 0.5;
     float cy = center.y - resizedFrame.rows * 0.5;

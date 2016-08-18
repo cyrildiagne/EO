@@ -15,12 +15,12 @@ void BallTracker::setNextFrameId() {
   }
 }
 
-void BallTracker::update(const cv::Mat &frame) {
+void BallTracker::update(const cv::Mat &frame, bool bDebug) {
   // start chrono
   auto start = std::chrono::steady_clock::now();
 
   // detect blobs from input frame
-  detector.process(frame);
+  detector.process(frame, bDebug);
   // track identities
   follower.process(detector.circles);
 

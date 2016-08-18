@@ -17,7 +17,7 @@ class BallDetector {
 public:
   BallDetector();
   // detect
-  void process(const cv::Mat &frame);
+  void process(const cv::Mat &frame, bool bDebug);
   // detected circles
   std::vector<DetectedCircle> circles;
   // intermediate mats

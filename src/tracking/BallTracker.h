@@ -13,7 +13,7 @@ class BallTracker {
 public:
   enum FrameId { Input, Resize, HSV, Threshold, Morph };
   void setup();
-  void update(const cv::Mat &frame);
+  void update(const cv::Mat &frame, bool bDebug);
   double getTrackTime() { return trackTime; }
   // returns the lastest frame of currFrameId
   const cv::Mat &getCurrFrame();
