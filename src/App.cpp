@@ -172,7 +172,7 @@ void App::mouseMoveEvent(MouseMoveEvent &event) {
   Vector2i size = defaultFramebuffer.viewport().size();
   float screenScale = static_cast<float>(size.x()) / 1280;
   float x = static_cast<float>(size.x() - mouse.x()) / screenScale;
-  float y = static_cast<float>(mouse.y()) / screenScale;
+  float y = static_cast<float>(mouse.y()) / screenScale + 150;
   SimulationCapture::mouse.x = x;
   SimulationCapture::mouse.y = y;
   event.setAccepted();
