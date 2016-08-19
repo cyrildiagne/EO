@@ -31,6 +31,7 @@ add_executable(EO
   src/tracking/BallTracker.cpp
   src/view/Label.cpp
   src/view/BallMenController.cpp
+  src/view/fx/Clap.cpp
   src/view/ballman/BallMan.cpp
   src/view/ballman/Leg.cpp
   src/view/ballman/Face.cpp

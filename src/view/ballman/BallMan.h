@@ -3,6 +3,7 @@
 
 #include "view/ballman/Face.h"
 #include "view/ballman/Leg.h"
+#include "view/fx/Clap.h"
 #include "view/primitives/Circle.h"
 
 namespace eo {

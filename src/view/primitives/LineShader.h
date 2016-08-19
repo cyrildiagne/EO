@@ -49,7 +49,7 @@ void main() {
   if (1-dist < feather) {
     alpha = (1-dist) / feather;
   }
-  fragmentColor = vec4(color.rgb, alpha);
+  fragmentColor = vec4(color.rgb, alpha * color.a);
 }
 )GLSL").compile();
 

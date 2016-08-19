@@ -11,6 +11,7 @@
 
 #include "tracking/BallTracker.h"
 #include "view/ballman/BallMan.h"
+#include "view/fx/Clap.h"
 
 namespace eo {
 namespace view {
@@ -32,6 +33,7 @@ private:
 
   void setupClap();
   void playClap();
+  Clap clap;
 
   Corrade::Containers::Array<char> bufferData;
   // Magnum::Audio::Playable2D clap;

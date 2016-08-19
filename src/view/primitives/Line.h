@@ -17,12 +17,13 @@ namespace view {
 class Line {
 public:
   Line();
+  Line(const std::vector<Vector2> &pts);
   ~Line();
   void setPoints(const std::vector<Vector2> &pts);
   void draw();
 
   float thickness;
-  Color3 color;
+  Color4 color;
   Vector2 scale;
   Vector2 position;
 

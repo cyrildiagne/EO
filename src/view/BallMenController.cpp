@@ -33,7 +33,7 @@ void BallMenController::update(const std::vector<FollowedCircle> &circles,
       ballmen[c.label] = std::shared_ptr<BallMan>(new BallMan);
       // Color3 color{utils::random(1.f), utils::random(1.f),
       // utils::random(1.f)};
-      Color3 color{1.f, 1.f, utils::random(1.f)};
+      Color3 color{1.f, 1.f, 1.f};
       ballmen[c.label]->setup(position, radius, color);
       ball = ballmen.find(c.label);
     } else {
@@ -83,6 +83,8 @@ void BallMenController::updateClaps() {
       checkMatch(b1->rightArm, b2->leftArm);
     }
   }
+  // update visual clap
+  clap.update();
 }
 
 void BallMenController::checkMatch(Leg &l1, Leg &l2) {
@@ -94,6 +96,9 @@ void BallMenController::checkMatch(Leg &l1, Leg &l2) {
       l2.targetLeg = &l1;
       // play sound
       playClap();
+      // display visual feedback
+      Vector2 center{(l1.pts[0] + l2.pts[0]) / 2};
+      clap.reset(center);
     }
   }
   updateLegTarget(l1);
@@ -124,6 +129,7 @@ void BallMenController::draw() {
   for (auto &b : ballmen) {
     b.second->draw();
   }
+  clap.draw();
 }
 
 void BallMenController::setupClap() {
@@ -149,6 +155,9 @@ void BallMenController::setupClap() {
   // setup audio source
   source.setBuffer(&testBuffer);
   source.setLooping(false);
+  // setup visual element
+  clap.setup();
+  clap.setColor({0.8f, 1.f, 0.f});
 }
 
 void BallMenController::playClap() { source.play(); }
