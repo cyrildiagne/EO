@@ -23,5 +23,5 @@
     DEALINGS IN THE SOFTWARE.
 */
 
-#define MAGNUM_PLUGINS_FONT_DIR \
-  "./FreeTypeFont"
+#define MAGNUM_PLUGINS_FONT_DIR "./FreeTypeFont"
+#define MAGNUM_PLUGINS_AUDIOIMPORTER_DIR "./WavAudioImporter"

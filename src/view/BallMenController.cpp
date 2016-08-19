@@ -1,8 +1,13 @@
 #include "BallMenController.h"
 
+#include <iostream>
+
+#include <Corrade/PluginManager/PluginManager.h>
+
 #include <Magnum/DefaultFramebuffer.h>
 #include <Magnum/Math/Vector.h>
 
+#include "configure.h"
 #include "utils.h"
 
 using namespace Magnum;
@@ -87,6 +92,8 @@ void BallMenController::checkMatch(Leg &l1, Leg &l2) {
     if ((l1.pts[0] - l2.pts[0]).length() < 300) {
       l1.targetLeg = &l2;
       l2.targetLeg = &l1;
+      // play sound
+      playClap();
     }
   }
   updateLegTarget(l1);
@@ -118,6 +125,33 @@ void BallMenController::draw() {
     b.second->draw();
   }
 }
+
+void BallMenController::setupClap() {
+  PluginManager::Manager<Audio::AbstractImporter> audioManager{
+      MAGNUM_PLUGINS_AUDIOIMPORTER_DIR};
+  // load plugin
+  std::unique_ptr<Audio::AbstractImporter> wavImporter =
+      audioManager.loadAndInstantiate("WavAudioImporter");
+  if (!wavImporter) {
+    std::cout << "could not find audio wav importer" << std::endl;
+    return;
+  }
+  // load resource
+  Utility::Resource rs("assets");
+  if (!wavImporter->openData(rs.getRaw("clap-bathroom-02.wav"))) {
+    std::cout << "could not open wav file" << std::endl;
+    return;
+  }
+  bufferData = wavImporter->data();
+  // add to buffer
+  testBuffer.setData(wavImporter->format(), bufferData,
+                     wavImporter->frequency());
+  // setup audio source
+  source.setBuffer(&testBuffer);
+  source.setLooping(false);
+}
+
+void BallMenController::playClap() { source.play(); }
 
 } // namespace view
 } // namespace eo

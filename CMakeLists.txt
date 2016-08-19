@@ -9,7 +9,7 @@ add_subdirectory(libs/magnum-plugins)
 
 find_package(FlyCapture2 REQUIRED)
 find_package(OpenCV REQUIRED )
-find_package(Magnum REQUIRED Sdl2Application)
+find_package(Magnum REQUIRED Sdl2Application Audio WavAudioImporter)
 find_package(MagnumPlugins REQUIRED FreeTypeFont)
 
 set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
@@ -47,6 +47,7 @@ target_link_libraries(EO
   opencv_highgui
   opencv_imgcodecs
   Magnum::Application
+  Magnum::Audio
   Magnum::Magnum
   Magnum::Shaders
   Magnum::Primitives
@@ -56,5 +57,6 @@ target_link_libraries(EO
 add_custom_target(Run
   COMMAND EO
   DEPENDS EO
+  DEPENDS WavAudioImporter
   DEPENDS FreeTypeFont
   WORKING_DIRECTORY ${CMAKE_PROJECT_DIR} )
