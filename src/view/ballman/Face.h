@@ -8,7 +8,6 @@
 #include <Magnum/Mesh.h>
 #include <Magnum/Shaders/Flat.h>
 
-#include "view/primitives/Circle.h"
 #include "view/primitives/Line.h"
 
 using namespace Magnum;
@@ -18,16 +17,24 @@ namespace view {
 
 class Face {
 public:
+  enum Expression { None, Neutral, Happy, Laughing, Extatic };
+
+  Face() : currentExpression(None), newExpression(Neutral) {}
   void setup();
+  void setExpression(Expression expr);
   void update(Vector2 p, Vector2 s);
   void draw();
 
   void setColor(Magnum::Color3 color);
+  Expression currentExpression;
 
 private:
-  std::unique_ptr<Line> leftEye;
-  std::unique_ptr<Line> rightEye;
-  std::unique_ptr<Line> mouth;
+  std::shared_ptr<Line> leftEye;
+  std::shared_ptr<Line> rightEye;
+  std::shared_ptr<Line> mouth;
+
+  Expression newExpression;
+  void applyNewExpression();
 };
 
 } // namespace view

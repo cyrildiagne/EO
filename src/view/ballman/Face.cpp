@@ -1,12 +1,36 @@
 #include "view/ballman/Face.h"
 
+#include "view/primitives/Arc.h"
+#include "view/primitives/Circle.h"
+#include <iostream>
+
 namespace eo {
 namespace view {
 
-void Face::setup() {
-  leftEye = std::unique_ptr<Line>(new Circle(8, 20));
-  rightEye = std::unique_ptr<Line>(new Circle(8, 20));
-  mouth = std::unique_ptr<Line>(new Circle(1, 20));
+void Face::setup() { applyNewExpression(); }
+
+void Face::setExpression(Expression expr) { newExpression = expr; }
+
+void Face::applyNewExpression() {
+  if (currentExpression == newExpression) {
+    return;
+  }
+  const float PI = 3.14159265359;
+  switch (newExpression) {
+  case Happy:
+  case Extatic:
+    leftEye = std::shared_ptr<Line>(new Arc(22, PI, PI));
+    rightEye = std::shared_ptr<Line>(new Arc(22, PI, PI));
+    mouth = std::shared_ptr<Line>(new Circle(1, 20));
+    break;
+  case Neutral:
+  default:
+    leftEye = std::shared_ptr<Line>(new Circle(8, 20));
+    rightEye = std::shared_ptr<Line>(new Circle(8, 20));
+    mouth = std::shared_ptr<Line>(new Circle(1, 20));
+    break;
+  }
+  currentExpression = newExpression;
 }
 
 void Face::update(Vector2 p, Vector2 s) {
@@ -28,7 +52,9 @@ void Face::update(Vector2 p, Vector2 s) {
 void Face::draw() {
   leftEye->draw();
   rightEye->draw();
-  mouth->draw();
+  // mouth->draw();
+  // apply new expression after drawing to make sure new face gets update data
+  applyNewExpression();
 }
 
 void Face::setColor(Magnum::Color3 color) {

@@ -82,6 +82,16 @@ void BallMenController::updateClaps() {
       checkMatch(b1->leftArm, b2->rightArm);
       checkMatch(b1->rightArm, b2->leftArm);
     }
+    // set expression depending on the number of hands attached
+    if (b1->leftArm.targetLeg || b1->rightArm.targetLeg) {
+      if (b1->leftArm.targetLeg && b1->rightArm.targetLeg) {
+        b1->face.setExpression(Face::Extatic);
+      } else {
+        b1->face.setExpression(Face::Happy);
+      }
+    } else {
+      b1->face.setExpression(Face::Neutral);
+    }
   }
   // update visual clap
   clap.update();
@@ -157,7 +167,7 @@ void BallMenController::setupClap() {
   source.setLooping(false);
   // setup visual element
   clap.setup();
-  clap.setColor({0.8f, 1.f, 0.f});
+  clap.setColor({1.0f, 0.f, 0.4f});
 }
 
 void BallMenController::playClap() { source.play(); }

@@ -42,27 +42,27 @@ void BallMan::setColor(Magnum::Color3 color) {
   face.setColor(color);
 }
 
-void BallMan::update(Vector2 p, float radius, float t) {
-  position = p;
-  float r = body.radius;
-  this->radius = radius;
-  Vector2 s = Vector2{radius / r, radius / r};
+void BallMan::update(Vector2 p, float r, float t) {
+  position += (p - position) * 0.45;
+  radius += (r - radius) * 0.45;
+  Vector2 s = Vector2{radius / body.radius, radius / body.radius};
   // update arms
-  leftArm.update(Vector2(p.x() - radius, p.y()), t);
+  leftArm.update(Vector2(position.x() - radius, position.y()), t);
   leftArm.scale = s;
-  rightArm.update(Vector2(p.x() + radius, p.y()), t);
+  rightArm.update(Vector2(position.x() + radius, position.y()), t);
   rightArm.scale = s;
   // update legs
   Vector2 legsOffset =
       Matrix3::rotation(60.0_degf).transformVector({radius, 0});
-  leftLeg.update(p + legsOffset, t);
+  leftLeg.update(position + legsOffset, t);
   leftLeg.scale = s;
-  Vector2 rightLegOffset{p.x() - legsOffset.x(), p.y() + legsOffset.y()};
+  Vector2 rightLegOffset{position.x() - legsOffset.x(),
+                         position.y() + legsOffset.y()};
   rightLeg.update(rightLegOffset, t);
   rightLeg.scale = s;
   // update body radius
   body.scale = s;
-  body.position = p;
+  body.position = position;
   // update face
   face.update(p, s);
 }
@@ -72,7 +72,7 @@ void BallMan::draw() {
     return;
   }
   // draw body
-  body.draw();
+  // body.draw();
   // draw arms & legs
   leftArm.draw();
   rightArm.draw();
