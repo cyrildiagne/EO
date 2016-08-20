@@ -16,7 +16,7 @@ inline float GetFollowDistanceSquared(const FollowedCircle &a,
 // most of the logic here borrowed from ofxCv
 // https://github.com/kylemcdonald/ofxCv
 void BallFollower::process(const std::vector<DetectedCircle> &detected) {
-  float maxDistance = 500000;
+  float maxDistance = 300000;
   std::vector<FollowedCircle> previous = circles;
 
   // build NxM distance matrix

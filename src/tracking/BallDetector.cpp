@@ -6,8 +6,8 @@ namespace eo {
 namespace tracking {
 
 BallDetector::BallDetector()
-    : rescale(0.25), minHue(35), maxHue(110), minSaturation(30),
-      maxSaturation(225), minValue(30), maxValue(255) {}
+    : rescale(0.50), minHue(30), maxHue(100), minSaturation(130),
+      maxSaturation(250), minValue(30), maxValue(150) {}
 
 void BallDetector::process(const cv::Mat &frame, bool bDebug) {
   // get scaled down copy
@@ -26,6 +26,8 @@ void BallDetector::process(const cv::Mat &frame, bool bDebug) {
   const int morph_elem = 2; // 0: Rect - 1: Cross - 2: Ellipse
   float msize = morphSize;
   const cv::Point pos = cv::Point(msize, msize);
+  // blur
+  cv::GaussianBlur(threshFrame, morphFrame, cv::Size(3, 3), 2, 2);
   // erode
   cv::Mat element1 = getStructuringElement(
       morph_elem, cv::Size(2 * msize + 1, 2 * msize + 1), pos);
