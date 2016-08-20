@@ -57,7 +57,7 @@ void Face::draw() {
   applyNewExpression();
 }
 
-void Face::setColor(Magnum::Color3 color) {
+void Face::setColor(Magnum::Color4 color) {
   leftEye->color = color;
   rightEye->color = color;
   mouth->color = color;

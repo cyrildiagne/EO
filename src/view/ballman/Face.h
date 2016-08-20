@@ -25,7 +25,7 @@ public:
   void update(Vector2 p, Vector2 s);
   void draw();
 
-  void setColor(Magnum::Color3 color);
+  void setColor(Magnum::Color4 color);
   Expression currentExpression;
 
 private:
