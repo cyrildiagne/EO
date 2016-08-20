@@ -65,7 +65,7 @@ bool FlyCaptureCamera::do_setup() {
   setProperty(FlyCapture2::SHUTTER, 8.0);
   setProperty(FlyCapture2::GAIN, 0.0);
   setProperty(FlyCapture2::FRAME_RATE, 60.0);
-  setWhiteBalance(522, 725);
+  setWhiteBalance(533, 841);
   return true;
 }
 
