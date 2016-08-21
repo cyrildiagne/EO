@@ -42,10 +42,10 @@ void SimulationCapture::do_update() {
     if (c.position.x < 0 || c.position.x > w) {
       c.speed.x *= -1;
     }
-    cv::circle(cvImage, c.position, c.radius, cv::Scalar(125, 255, 80), -1);
+    cv::circle(cvImage, c.position, c.radius, cv::Scalar(125, 150, 80), -1);
   }
   // draw mouse circle
-  cv::circle(cvImage, mouse, 50, cv::Scalar(105, 235, 60), -1);
+  cv::circle(cvImage, mouse, 50, cv::Scalar(125, 150, 80), -1);
   isImageNew = true;
 }
 

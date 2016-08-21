@@ -33,7 +33,7 @@ void BallMenController::update(const std::vector<FollowedCircle> &circles,
       ballmen[c.label] = std::shared_ptr<BallMan>(new BallMan);
       // Color3 color{utils::random(1.f), utils::random(1.f),
       // utils::random(1.f)};
-      Color3 color{0.7f, 0.7f, 0.75f};
+      Color3 color{0.55f, 0.55f, 0.65f};
       ballmen[c.label]->setup(position, radius, color);
       ball = ballmen.find(c.label);
     } else {
