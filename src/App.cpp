@@ -37,7 +37,7 @@ private:
   Label fpsView;
   Timeline timeline;
   MatView MatView;
-  std::unique_ptr<AbstractCapture> capture;
+  std::shared_ptr<AbstractCapture> capture;
   BallMenController ballmen;
   BallTracker ballTracker;
   bool debugMode;
@@ -50,15 +50,15 @@ App::App(const Arguments &arguments)
                          .setWindowFlags(Configuration::WindowFlag::Fullscreen)
                          .setTitle("EO beta")
                          .setSize({1920, 1080})),
-      capture(new SimulationCapture) {
-  // capture(new FlyCaptureCamera) {
+      capture(new FlyCaptureCamera) {
   ellapsedTime = 0.f;
   debugMode = true;
   fpsView.setup();
   // setup flycapture cam
   bool isAvailable = capture->setup();
   if (!isAvailable) {
-    capture = nullptr;
+    capture = std::make_shared<SimulationCapture>();
+    capture->setup();
   }
   // camera view
   MatView.setup();
