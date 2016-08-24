@@ -6,11 +6,16 @@
 namespace eo {
 namespace tracking {
 
-struct DetectedCircle {
-  DetectedCircle(float x, float y, float radius) : x(x), y(y), radius(radius) {}
+class DetectedCircle {
+public:
+  typedef std::vector<std::vector<float>> Blob;
+  DetectedCircle(float x, float y, float radius, Blob blob, bool isCircle)
+      : x(x), y(y), radius(radius), isCircle(isCircle), blob(blob) {}
   float x;
   float y;
   float radius;
+  bool isCircle;
+  Blob blob;
 };
 
 class BallDetector {

@@ -1,13 +1,14 @@
 #include "BallDetector.h"
 
+#include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 
 namespace eo {
 namespace tracking {
 
 BallDetector::BallDetector()
-    : rescale(0.50), minHue(30), maxHue(100), minSaturation(60),
-      maxSaturation(250), minValue(15), maxValue(150) {}
+    : rescale(0.50), minHue(32), maxHue(100), minSaturation(40),
+      maxSaturation(230), minValue(35), maxValue(255) {}
 
 void BallDetector::process(const cv::Mat &frame, bool bDebug) {
   // get scaled down copy
@@ -68,9 +69,12 @@ void BallDetector::process(const cv::Mat &frame, bool bDebug) {
     cv::minEnclosingCircle(static_cast<cv::Mat>(contours[i]), center, radius);
     if (radius < 5) {
       continue;
-    } // otherwise compare radius to ball area
-    // else if (3.14159 * radius * radius > cv::contourArea(contours[i]) * 1.75)
-    // {
+    }
+    // otherwise compare radius to ball area
+    bool isCircle = true;
+    if (3.14159 * radius * radius > cv::contourArea(contours[i]) * 1.5) {
+      isCircle = false;
+    }
     //   // look for hough circles inside the minEnclosingCircle
     //   for (size_t j = 0; j < hghCircles.size(); j++) {
     //     const float hghX = hghCircles[i][0];
@@ -100,10 +104,23 @@ void BallDetector::process(const cv::Mat &frame, bool bDebug) {
                  cv::Scalar(0, 255, 0), 1);
     }
 
+    // approximate the contour
+    // float epsilon = 0.003 * cv::arcLength(contours[i], true);
+    // PointVec approxContour;
+    // cv::approxPolyDP(contours[i], approxContour, epsilon, true);
+    //
+    // // create blob from approx contour
+    DetectedCircle::Blob blob;
+    // for (size_t j = 0; j < approxContour.size(); j++) {
+    //   const float x = approxContour[j].x - center.x;
+    //   const float y = approxContour[j].y - center.y;
+    //   blob.push_back({-x / rescale, y / rescale});
+    // }
+
     float cx = center.x - resizedFrame.cols * 0.5;
     float cy = center.y - resizedFrame.rows * 0.5;
-    circles.push_back(
-        DetectedCircle{-cx / rescale, cy / rescale, radius / rescale});
+    circles.push_back(DetectedCircle{-cx / rescale, cy / rescale,
+                                     radius / rescale, blob, isCircle});
   }
 }
 

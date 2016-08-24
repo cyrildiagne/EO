@@ -33,8 +33,9 @@ void BallMenController::update(const std::vector<FollowedCircle> &circles,
       ballmen[c.label] = std::shared_ptr<BallMan>(new BallMan);
       // Color3 color{utils::random(1.f), utils::random(1.f),
       // utils::random(1.f)};
-      Color3 color{0.55f, 0.55f, 0.65f};
-      ballmen[c.label]->setup(position, radius, color);
+      Color3 color{0.85f, 0.95f, 0.95f};
+      // Color3 color{0.15f, 0.2f, 0.15f};
+      ballmen[c.label]->setup(position, radius, color, c.circle);
       ball = ballmen.find(c.label);
     } else {
       // otherwise remove the ball from the deadballs list
@@ -46,7 +47,7 @@ void BallMenController::update(const std::vector<FollowedCircle> &circles,
       ball->second->visible = (c.numUpdatesMissing == 0);
     }
     // update ball
-    ball->second->update(position, radius, dt);
+    ball->second->update(position, radius, dt, c.circle);
   }
   // remove characters that don't have circles anymore
   for (const auto &b : deadBallMen) {
@@ -168,7 +169,7 @@ void BallMenController::setupClap() {
   source.setLooping(false);
   // setup visual element
   clap.setup();
-  clap.setColor({1.0f, 0.f, 0.4f});
+  clap.setColor({0.85f, 0.95f, 0.95f});
 }
 
 void BallMenController::playClap() { source.play(); }
