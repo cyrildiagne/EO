@@ -16,21 +16,25 @@ BallMan::~BallMan() {
   }
 }
 
-void BallMan::setup(Vector2 p, float radius, Color3 color) {
+void BallMan::setup(Vector2 p, float radius, Color3 color,
+                    const tracking::DetectedCircle &circle) {
   // setup body
   position = p;
   body.setup(100, 64);
   // radius should be used to accurately initialize the legs like in update
   (void)radius;
   // setup arms & legs
-  leftArm.setup(p, 20);
-  rightArm.setup(p, 20);
-  leftLeg.setup(p);
-  rightLeg.setup(p);
+  leftArm.setup(p, 25);
+  rightArm.setup(p, 25);
+  leftLeg.setup(p, 17);
+  rightLeg.setup(p, 17);
   // setup face
   face.setup();
   // set color;
   setColor(color);
+  // setup contour
+  // contours.setup(circle.blob);
+  mergedCounter = 0;
 }
 
 void BallMan::setColor(Magnum::Color3 color) {
@@ -42,7 +46,15 @@ void BallMan::setColor(Magnum::Color3 color) {
   face.setColor(color);
 }
 
-void BallMan::update(Vector2 p, float r, float t) {
+void BallMan::update(Vector2 p, float r, float t,
+                     const tracking::DetectedCircle &circle) {
+  // check merged status
+  if (circle.isCircle) {
+    mergedCounter = 0;
+  } else {
+    mergedCounter++;
+  }
+  // apply positions and scale
   position += (p - position) * 0.45;
   radius += (r - radius) * 0.45;
   Vector2 s = Vector2{radius / body.radius, radius / body.radius};
@@ -65,21 +77,33 @@ void BallMan::update(Vector2 p, float r, float t) {
   body.position = position;
   // update face
   face.update(p, s);
+  // update contours
+  // contours.scale = s;
+  // contours.position = position;
+  // contours.update(circle.blob);
 }
 
 void BallMan::draw() {
   if (!visible) {
     return;
   }
+  // if (isMerged) {
+  //   contours.draw();
+  //   return;
+  // }
   // draw body
   // body.draw();
   // draw arms & legs
-  leftArm.draw();
-  rightArm.draw();
-  leftLeg.draw();
-  rightLeg.draw();
+  if (mergedCounter < 10) {
+    leftArm.draw();
+    rightArm.draw();
+    leftLeg.draw();
+    rightLeg.draw();
+  }
   // draw face
   face.draw();
+
+  // draw contours
 }
 
 } // namespace view

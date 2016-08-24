@@ -1,6 +1,7 @@
 #ifndef BallMan_h
 #define BallMan_h
 
+#include "view/ballman/Contours.h"
 #include "view/ballman/Face.h"
 #include "view/ballman/Leg.h"
 #include "view/fx/Clap.h"
@@ -13,8 +14,10 @@ class BallMan {
 public:
   BallMan() : visible(true){};
   ~BallMan();
-  void setup(Vector2 p, float radius, Color3 color = {1.f, 0.f, 0.3f});
-  void update(Vector2 p, float radius, float t);
+  void setup(Vector2 p, float radius, Color3 color,
+             const tracking::DetectedCircle &circle);
+  void update(Vector2 p, float radius, float t,
+              const tracking::DetectedCircle &circle);
   void draw();
 
   void setColor(Magnum::Color3 color);
@@ -23,12 +26,15 @@ public:
   Vector2 position;
   float radius;
 
+  int mergedCounter;
+
   Circle body;
   Leg leftArm;
   Leg rightArm;
   Leg leftLeg;
   Leg rightLeg;
   Face face;
+  Contours contours;
 };
 
 } // namespace view
