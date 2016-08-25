@@ -1,11 +1,8 @@
 #include "BallMenController.h"
 
-#include <iostream>
-
-#include <Corrade/PluginManager/PluginManager.h>
-
 #include <Magnum/DefaultFramebuffer.h>
 #include <Magnum/Math/Vector.h>
+#include <iostream>
 
 #include "configure.h"
 #include "utils.h"
@@ -15,6 +12,8 @@ using namespace eo::tracking;
 
 namespace eo {
 namespace view {
+
+// BallMenController::~BallMenController() {}
 
 void BallMenController::update(const std::vector<FollowedCircle> &circles,
                                double dt) {
@@ -145,34 +144,17 @@ void BallMenController::draw() {
 }
 
 void BallMenController::setupClap() {
-  PluginManager::Manager<Audio::AbstractImporter> audioManager{
-      MAGNUM_PLUGINS_AUDIOIMPORTER_DIR};
-  // load plugin
-  std::unique_ptr<Audio::AbstractImporter> wavImporter =
-      audioManager.loadAndInstantiate("WavAudioImporter");
-  if (!wavImporter) {
-    std::cout << "could not find audio wav importer" << std::endl;
-    return;
-  }
-  // load resource
-  Utility::Resource rs("assets");
-  if (!wavImporter->openData(rs.getRaw("clap-bathroom-02.wav"))) {
-    std::cout << "could not open wav file" << std::endl;
-    return;
-  }
-  bufferData = wavImporter->data();
-  // add to buffer
-  testBuffer.setData(wavImporter->format(), bufferData,
-                     wavImporter->frequency());
-  // setup audio source
-  source.setBuffer(&testBuffer);
-  source.setLooping(false);
+  // setup sound
+  sound.setup();
   // setup visual element
   clap.setup();
   clap.setColor({0.85f, 0.95f, 0.95f});
 }
 
-void BallMenController::playClap() { source.play(); }
+void BallMenController::playClap() {
+  // play sound
+  sound.play(audio::Sound::CLAP1);
+}
 
 } // namespace view
 } // namespace eo

@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 2.8.12)
 project(EO)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/")
@@ -36,6 +37,7 @@ add_executable(EO
   src/view/ballman/Leg.cpp
   src/view/ballman/Face.cpp
   src/view/primitives/Line.cpp
+  src/audio/Sound.cpp
   ${MatView_RESOURCES})
 
 target_include_directories(EO PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
