@@ -17,8 +17,8 @@ bool SimulationCapture::do_setup() {
   cvImage = cv::Mat::zeros(1024, 1280, CV_8UC3);
   //
   cv::Point center(cvImage.rows * 0.5, cvImage.cols * 0.5);
-  for (int i = 0; i < 5; i++) {
-    float radius = utils::random(30.f, 90.f);
+  for (int i = 0; i < 10; i++) {
+    float radius = utils::random(10.f, 90.f);
     float sx = utils::random(-5, 5);
     float sy = utils::random(-5, 5);
     circles.push_back({center, radius, cv::Point2f{sy, sx}});
