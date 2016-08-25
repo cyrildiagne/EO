@@ -1,3 +1,12 @@
+// TODO
+// bug: CRITICAL app lock up
+// audio: new clap sound
+// audio: clap sound variations
+// ux: prevent hidden balls from clapping
+// gfx: roundy ends
+
+#include <fstream>
+#include <iostream>
 #include <iostream>
 #include <sstream>
 
@@ -42,6 +51,7 @@ private:
   BallTracker ballTracker;
   bool debugMode;
   double ellapsedTime;
+  double timer;
 };
 
 App::App(const Arguments &arguments)
@@ -51,8 +61,8 @@ App::App(const Arguments &arguments)
                          .setTitle("EO beta")
                          .setSize({1920, 1080})),
       capture(new FlyCaptureCamera) {
-  ellapsedTime = 0.f;
   SDL_ShowCursor(SDL_DISABLE);
+  ellapsedTime = timer = 0.f;
   debugMode = false;
   fpsView.setup();
   // setup flycapture cam
@@ -78,6 +88,14 @@ App::App(const Arguments &arguments)
 
 void App::tickEvent() {
   ellapsedTime += timeline.previousFrameDuration();
+  timer += timeline.previousFrameDuration();
+  if (timer > 3) {
+    timer -= 3;
+    std::ofstream myfile;
+    myfile.open("log.txt");
+    myfile << "running";
+    myfile.close();
+  }
   // update camera
   if (capture) {
     capture->update();
