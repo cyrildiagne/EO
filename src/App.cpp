@@ -52,6 +52,7 @@ App::App(const Arguments &arguments)
                          .setSize({1920, 1080})),
       capture(new FlyCaptureCamera) {
   ellapsedTime = 0.f;
+  SDL_ShowCursor(SDL_DISABLE);
   debugMode = false;
   fpsView.setup();
   // setup flycapture cam
