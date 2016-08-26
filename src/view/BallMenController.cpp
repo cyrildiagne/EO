@@ -36,6 +36,13 @@ void BallMenController::update(const std::vector<FollowedCircle> &circles,
       // Color3 color{0.15f, 0.2f, 0.15f};
       ballmen[c.label]->setup(position, radius, color);
       ball = ballmen.find(c.label);
+      // play sound effect
+      float rdm = utils::random(1.f);
+      if (rdm > 0.5) {
+        sound.play(audio::Sound::NEW1);
+      } else {
+        sound.play(audio::Sound::NEW2);
+      }
     } else {
       // otherwise remove the ball from the deadballs list
       const auto it = deadBallMen.find(ball->first);
@@ -164,10 +171,13 @@ void BallMenController::setupClap() {
 void BallMenController::playClap() {
   // play sound
   if (numUpdateSinceLastClap > 5) {
-    if (utils::random(1.f) > 0.5) {
+    float rdm = utils::random(1.f);
+    if (rdm > 0.6) {
       sound.play(audio::Sound::CLAP1);
-    } else {
+    } else if (rdm > 0.3) {
       sound.play(audio::Sound::CLAP2);
+    } else {
+      sound.play(audio::Sound::CLAP3);
     }
     numUpdateSinceLastClap = 0;
   }

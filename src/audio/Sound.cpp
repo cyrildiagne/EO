@@ -17,6 +17,9 @@ void Sound::setup() {
   // load resources
   addClip(Clip::CLAP1, "48310__dkifer__handclap.wav");
   addClip(Clip::CLAP2, "clap-bathroom-02.wav");
+  addClip(Clip::CLAP3, "84384__blackie666__lowbd2.wav");
+  addClip(Clip::NEW1, "zozo_kalimba_stop_hard_1b.wav");
+  addClip(Clip::NEW2, "zozo_kalimba_stop_hard_4.wav");
 }
 
 void Sound::addClip(eo::audio::Sound::Clip clipId, std::string filename) {

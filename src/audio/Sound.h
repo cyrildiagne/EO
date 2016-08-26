@@ -27,7 +27,7 @@ public:
 class Sound {
 public:
   Sound() : audioManager{MAGNUM_PLUGINS_AUDIOIMPORTER_DIR} {}
-  enum Clip { CLAP1, CLAP2 };
+  enum Clip { CLAP1, CLAP2, CLAP3, NEW1, NEW2 };
   void setup();
   void play(Clip clip);
 
