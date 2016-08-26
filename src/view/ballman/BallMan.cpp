@@ -16,8 +16,7 @@ BallMan::~BallMan() {
   }
 }
 
-void BallMan::setup(Vector2 p, float radius, Color3 color,
-                    const tracking::DetectedCircle &circle) {
+void BallMan::setup(Vector2 p, float radius, Color3 color) {
   // setup body
   position = p;
   body.setup(100, 64);

@@ -32,13 +32,13 @@ void BallMenController::update(const std::vector<FollowedCircle> &circles,
       ballmen[c.label] = std::shared_ptr<BallMan>(new BallMan);
       // Color3 color{utils::random(1.f), utils::random(1.f),
       // utils::random(1.f)};
-      Color3 color{0.85f, 0.95f, 0.95f};
+      const Color3 color{0.85f, 0.95f, 0.95f};
       // Color3 color{0.15f, 0.2f, 0.15f};
-      ballmen[c.label]->setup(position, radius, color, c.circle);
+      ballmen[c.label]->setup(position, radius, color);
       ball = ballmen.find(c.label);
     } else {
       // otherwise remove the ball from the deadballs list
-      auto it = deadBallMen.find(ball->first);
+      const auto it = deadBallMen.find(ball->first);
       if (it != deadBallMen.end()) {
         deadBallMen.erase(it);
       }

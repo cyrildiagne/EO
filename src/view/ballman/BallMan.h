@@ -14,8 +14,7 @@ class BallMan {
 public:
   BallMan() : visible(true){};
   ~BallMan();
-  void setup(Vector2 p, float radius, Color3 color,
-             const tracking::DetectedCircle &circle);
+  void setup(Vector2 p, float radius, Color3 color);
   void update(Vector2 p, float radius, float t,
               const tracking::DetectedCircle &circle);
   void draw();
