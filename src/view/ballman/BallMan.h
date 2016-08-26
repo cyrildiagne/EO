@@ -6,6 +6,7 @@
 #include "view/ballman/Leg.h"
 #include "view/fx/Clap.h"
 #include "view/primitives/Circle.h"
+#include <Magnum/Audio/Source.h>
 
 namespace eo {
 namespace view {
@@ -24,6 +25,7 @@ public:
   bool visible;
   Vector2 position;
   float radius;
+  // float inteRadius;
 
   int mergedCounter;
 
@@ -34,6 +36,7 @@ public:
   Leg rightLeg;
   Face face;
   Contours contours;
+  // std::shared_ptr<Magnum::Audio::Source> yeye;
 };
 
 } // namespace view

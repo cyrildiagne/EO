@@ -30,19 +30,23 @@ void BallMenController::update(const std::vector<FollowedCircle> &circles,
     // circle needs a new character
     if (ball == ballmen.end()) {
       ballmen[c.label] = std::shared_ptr<BallMan>(new BallMan);
-      // Color3 color{utils::random(1.f), utils::random(1.f),
-      // utils::random(1.f)};
+      // ballmen[c.label]->yeye = std::make_shared<Magnum::Audio::Source>();
+      // ballmen[c.label]->yeye->setLooping(false);
+      // ballmen[c.label]->yeye->setGain(0.5);
+      // ballmen[c.label]->yeye->setBuffer(
+      //     &sound.clips[audio::Sound::Clip::YEYE].buffer);
       const Color3 color{0.85f, 0.95f, 0.95f};
       // Color3 color{0.15f, 0.2f, 0.15f};
       ballmen[c.label]->setup(position, radius, color);
       ball = ballmen.find(c.label);
       // play sound effect
-      float rdm = utils::random(1.f);
-      if (rdm > 0.5) {
-        sound.play(audio::Sound::NEW1);
-      } else {
-        sound.play(audio::Sound::NEW2);
-      }
+      // float rdm = utils::random(1.f);
+      // if (rdm > 0.5) {
+      //   sound.play(audio::Sound::NEW1);
+      // } else {
+      //   sound.play(audio::Sound::NEW2);
+      // }
+      sound.play(audio::Sound::CLAP3);
     } else {
       // otherwise remove the ball from the deadballs list
       const auto it = deadBallMen.find(ball->first);
@@ -172,12 +176,12 @@ void BallMenController::playClap() {
   // play sound
   if (numUpdateSinceLastClap > 5) {
     float rdm = utils::random(1.f);
-    if (rdm > 0.6) {
+    if (rdm > 0.5) {
       sound.play(audio::Sound::CLAP1);
-    } else if (rdm > 0.3) {
-      sound.play(audio::Sound::CLAP2);
+      // } else if (rdm > 0.3) {
+      // sound.play(audio::Sound::CLAP2);
     } else {
-      sound.play(audio::Sound::CLAP3);
+      sound.play(audio::Sound::CLAP2);
     }
     numUpdateSinceLastClap = 0;
   }

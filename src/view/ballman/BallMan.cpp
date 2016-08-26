@@ -16,12 +16,12 @@ BallMan::~BallMan() {
   }
 }
 
-void BallMan::setup(Vector2 p, float radius, Color3 color) {
+void BallMan::setup(Vector2 p, float r, Color3 color) {
   // setup body
   position = p;
   body.setup(100, 64);
   // radius should be used to accurately initialize the legs like in update
-  (void)radius;
+  radius = r;
   // setup arms & legs
   leftArm.setup(p, 25);
   rightArm.setup(p, 25);
@@ -34,6 +34,8 @@ void BallMan::setup(Vector2 p, float radius, Color3 color) {
   // setup contour
   // contours.setup(circle.blob);
   mergedCounter = 0;
+  //
+  // inteRadius = 0;
 }
 
 void BallMan::setColor(Magnum::Color3 color) {
@@ -61,6 +63,8 @@ void BallMan::update(Vector2 p, float r, float t,
   }
   // apply positions and scale
   position += (p - position) * 0.45;
+  // std::cout << radius << std::endl;
+  // inteRadius += r - radius;
   radius += (r - radius) * 0.45;
   Vector2 s = Vector2{radius / body.radius, radius / body.radius};
   // update arms
@@ -86,6 +90,12 @@ void BallMan::update(Vector2 p, float r, float t,
   // contours.scale = s;
   // contours.position = position;
   // contours.update(circle.blob);
+  // if (inteRadius > 100) {
+  //   if (yeye->state() != Magnum::Audio::Source::State::Playing) {
+  //     yeye->play();
+  //   }
+  // }
+  // inteRadius *= 0.9;
 }
 
 void BallMan::draw() {

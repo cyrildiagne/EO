@@ -27,17 +27,17 @@ public:
 class Sound {
 public:
   Sound() : audioManager{MAGNUM_PLUGINS_AUDIOIMPORTER_DIR} {}
-  enum Clip { CLAP1, CLAP2, CLAP3, NEW1, NEW2 };
+  enum Clip { CLAP1, CLAP2, CLAP3, NEW1, NEW2, YEYE };
   void setup();
   void play(Clip clip);
 
   void addClip(Clip clipId, std::string filename);
+  std::shared_ptr<Audio::AbstractImporter> wavImporter;
+  std::map<Clip, AudioClip> clips;
 
 private:
-  std::shared_ptr<Audio::AbstractImporter> wavImporter;
   Magnum::Audio::Context context;
   std::vector<std::shared_ptr<Magnum::Audio::Source>> sources;
-  std::map<Clip, AudioClip> clips;
   PluginManager::Manager<Audio::AbstractImporter> audioManager;
 };
 
