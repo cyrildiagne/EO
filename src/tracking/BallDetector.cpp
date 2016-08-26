@@ -34,6 +34,7 @@ void BallDetector::process(const cv::Mat &frame, bool bDebug) {
       morph_elem, cv::Size(2 * msize + 1, 2 * msize + 1), pos);
   cv::morphologyEx(threshFrame, morphFrame, cv::MORPH_OPEN, element1);
   // dilate
+  msize += 2;
   cv::Mat element2 = getStructuringElement(
       morph_elem, cv::Size(2 * msize + 1, 2 * msize + 1), pos);
   cv::morphologyEx(morphFrame, morphFrame, cv::MORPH_CLOSE, element2);
