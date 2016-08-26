@@ -102,15 +102,17 @@ void BallMenController::updateClaps() {
 void BallMenController::checkMatch(Leg &l1, Leg &l2) {
   // do not match arms tha are already paired
   if (!l1.targetLeg && !l2.targetLeg) {
-    // check arms distance
-    if ((l1.pts[0] - l2.pts[0]).length() < 300) {
-      l1.targetLeg = &l2;
-      l2.targetLeg = &l1;
-      // play sound
-      playClap();
-      // display visual feedback
-      Vector2 center{(l1.pts[0] + l2.pts[0]) / 2};
-      clap.reset(center);
+    if (l1.isVisible && l2.isVisible) {
+      // check arms distance
+      if ((l1.pts[0] - l2.pts[0]).length() < 250) {
+        l1.targetLeg = &l2;
+        l2.targetLeg = &l1;
+        // play sound
+        playClap();
+        // display visual feedback
+        Vector2 center{(l1.pts[0] + l2.pts[0]) / 2};
+        clap.reset(center);
+      }
     }
   }
   updateLegTarget(l1);
@@ -120,9 +122,16 @@ bool BallMenController::updateLegTarget(Leg &leg) {
   if (!leg.targetLeg) {
     return false;
   }
+  // separate the legs if one of them has become invisible
+  if (leg.isVisible == false || leg.targetLeg->isVisible == false) {
+    leg.targetLeg->targetLeg = nullptr;
+    leg.targetLeg = nullptr;
+    return false;
+  }
+  // check if distance should separate the legs
   const Vector2 shoulder = leg.pts[0];
   const Vector2 targetShoulder = leg.targetLeg->pts[0];
-  if ((shoulder - targetShoulder).length() > 300) {
+  if ((shoulder - targetShoulder).length() > 500) {
     leg.targetLeg->targetLeg = nullptr;
     leg.targetLeg = nullptr;
     return false;

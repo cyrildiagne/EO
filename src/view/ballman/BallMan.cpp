@@ -51,8 +51,14 @@ void BallMan::update(Vector2 p, float r, float t,
   // check merged status
   if (circle.isCircle) {
     mergedCounter = 0;
+    leftArm.isVisible = rightArm.isVisible = true;
+    leftLeg.isVisible = rightLeg.isVisible = true;
   } else {
     mergedCounter++;
+    if (mergedCounter > 9) {
+      leftArm.isVisible = rightArm.isVisible = false;
+      leftLeg.isVisible = rightLeg.isVisible = false;
+    }
   }
   // apply positions and scale
   position += (p - position) * 0.45;
@@ -94,7 +100,7 @@ void BallMan::draw() {
   // draw body
   // body.draw();
   // draw arms & legs
-  if (mergedCounter < 10) {
+  if (leftArm.isVisible == true) {
     leftArm.draw();
     rightArm.draw();
     leftLeg.draw();

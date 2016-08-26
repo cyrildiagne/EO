@@ -31,6 +31,7 @@ public:
 
   std::vector<VerletPoint> pts;
   Leg *targetLeg;
+  bool isVisible;
 
 private:
   Vector2 origin;
