@@ -14,7 +14,7 @@ namespace view {
 class BallMenController {
 public:
   // ~BallMenController();
-  BallMenController() { setupClap(); };
+  BallMenController() : numUpdateSinceLastClap(0) { setupClap(); };
   void update(const std::vector<tracking::FollowedCircle> &circles, double dt);
   void draw();
 
@@ -31,6 +31,7 @@ private:
   void playClap();
   Clap clap;
   audio::Sound sound;
+  long unsigned int numUpdateSinceLastClap;
 };
 
 } // namespace view

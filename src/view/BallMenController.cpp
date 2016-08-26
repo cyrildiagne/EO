@@ -96,6 +96,7 @@ void BallMenController::updateClaps() {
   }
   // update visual clap
   clap.update();
+  numUpdateSinceLastClap++;
 }
 
 void BallMenController::checkMatch(Leg &l1, Leg &l2) {
@@ -153,7 +154,14 @@ void BallMenController::setupClap() {
 
 void BallMenController::playClap() {
   // play sound
-  sound.play(audio::Sound::CLAP1);
+  if (numUpdateSinceLastClap > 5) {
+    if (utils::random(1.f) > 0.5) {
+      sound.play(audio::Sound::CLAP1);
+    } else {
+      sound.play(audio::Sound::CLAP2);
+    }
+    numUpdateSinceLastClap = 0;
+  }
 }
 
 } // namespace view
