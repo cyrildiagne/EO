@@ -20,7 +20,7 @@ public:
   Line(const std::vector<Vector2> &pts);
   ~Line();
   void setPoints(const std::vector<Vector2> &pts);
-  void draw();
+  virtual void draw();
 
   float thickness;
   Color4 color;

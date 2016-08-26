@@ -3,7 +3,6 @@
 namespace eo {
 namespace view {
 
-Leg::Leg() : targetLeg(nullptr), gravity(0.0), segmentLength(5) {}
 Leg::Leg()
     : targetLeg(nullptr), isVisible(true), gravity(0.0), segmentLength(5) {}
 
@@ -12,6 +11,7 @@ void Leg::setup(Vector2 pos, int numSegments) {
   for (int i = 0; i < numSegments; i++) {
     pts.push_back(VerletPoint(pos));
   }
+  // hand.setup(1, 32);
 }
 
 void Leg::update(Vector2 pos, float t) {
@@ -49,7 +49,17 @@ void Leg::update(Vector2 pos, float t) {
     vpts[i].y() = pts[i].y() / scale.y();
   }
   setPoints(vpts);
+  // update hand
+  // hand.thickness = thickness - 2;
+  // hand.position = pts[0];
+  // hand.color = color;
 }
+
+// void Leg::draw() {
+//   hand.scale = scale;
+//   hand.draw();
+//   Line::draw();
+// }
 
 void Leg::applyUnitaryVerletIntegration(VerletPoint &p, float t) {
   p.x() = 2 * p.x() - p.prev.x();

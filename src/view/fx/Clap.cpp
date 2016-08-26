@@ -24,7 +24,7 @@ void Clap::reset(Vector2 p) {
   for (auto &line : lines) {
     line->position = p;
     line->scale = scale;
-    line->thickness = 20.f;
+    line->thickness = 25.f;
   }
 }
 

@@ -7,7 +7,7 @@ namespace eo {
 namespace view {
 
 Line::Line()
-    : thickness(20.f), color{1.f, 1.f, 1.f, 1.f}, scale{1.f, 1.f},
+    : thickness(25.f), color{1.f, 1.f, 1.f, 1.f}, scale{1.f, 1.f},
       position{0.f, 0.f} {
   mesh.setPrimitive(MeshPrimitive::TriangleStrip);
 }

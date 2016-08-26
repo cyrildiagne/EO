@@ -8,6 +8,7 @@
 #include <Magnum/Mesh.h>
 #include <Magnum/Shaders/Flat.h>
 
+// #include "view/primitives/Circle.h"
 #include "view/primitives/Line.h"
 
 using namespace Magnum;
@@ -28,10 +29,13 @@ public:
   Leg();
   void setup(Vector2 pos, int numSegments = 15);
   void update(Vector2 pos, float t);
+  // void draw();
 
   std::vector<VerletPoint> pts;
   Leg *targetLeg;
   bool isVisible;
+
+  // Circle hand;
 
 private:
   Vector2 origin;
