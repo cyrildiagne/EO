@@ -16,7 +16,8 @@ BallMan::~BallMan() {
   }
 }
 
-void BallMan::setup(Vector2 p, float r, Color3 color) {
+void BallMan::setup(Vector2 p, float r, Color3 color,
+                    const tracking::DetectedCircle &circle) {
   // setup body
   position = p;
   body.setup(100, 64);
@@ -32,7 +33,7 @@ void BallMan::setup(Vector2 p, float r, Color3 color) {
   // set color;
   setColor(color);
   // setup contour
-  // contours.setup(circle.blob);
+  contours.setup(circle.blob);
   mergedCounter = 0;
   //
   // inteRadius = 0;
@@ -45,6 +46,7 @@ void BallMan::setColor(Magnum::Color3 color) {
   rightLeg.color = color;
   body.color = color;
   face.setColor(color);
+  contours.color = color;
 }
 
 void BallMan::update(Vector2 p, float r, float t,
@@ -87,9 +89,9 @@ void BallMan::update(Vector2 p, float r, float t,
   // update face
   face.update(p, s);
   // update contours
-  // contours.scale = s;
-  // contours.position = position;
-  // contours.update(circle.blob);
+  contours.scale = s;
+  contours.position = position;
+  contours.update(circle.blob);
   // if (inteRadius > 100) {
   //   if (yeye->state() != Magnum::Audio::Source::State::Playing) {
   //     yeye->play();
@@ -114,11 +116,12 @@ void BallMan::draw() {
     rightArm.draw();
     leftLeg.draw();
     rightLeg.draw();
+  } else {
+    // draw contours
+    contours.draw();
   }
   // draw face
   face.draw();
-
-  // draw contours
 }
 
 } // namespace view

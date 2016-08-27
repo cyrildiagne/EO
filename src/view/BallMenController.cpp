@@ -37,7 +37,7 @@ void BallMenController::update(const std::vector<FollowedCircle> &circles,
       //     &sound.clips[audio::Sound::Clip::YEYE].buffer);
       const Color3 color{0.85f, 0.95f, 0.95f};
       // Color3 color{0.15f, 0.2f, 0.15f};
-      ballmen[c.label]->setup(position, radius, color);
+      ballmen[c.label]->setup(position, radius, color, c.circle);
       ball = ballmen.find(c.label);
       // play sound effect
       // float rdm = utils::random(1.f);
@@ -46,12 +46,13 @@ void BallMenController::update(const std::vector<FollowedCircle> &circles,
       // } else {
       //   sound.play(audio::Sound::NEW2);
       // }
-      sound.play(audio::Sound::CLAP3);
+      sound.play(audio::Sound::CLAP2);
     } else {
       // otherwise remove the ball from the deadballs list
       const auto it = deadBallMen.find(ball->first);
       if (it != deadBallMen.end()) {
         deadBallMen.erase(it);
+        // sound.play(audio::Sound::CLAP2);
       }
       // and sync visibility status
       ball->second->visible = (c.numUpdatesMissing == 0);
@@ -142,9 +143,10 @@ bool BallMenController::updateLegTarget(Leg &leg) {
   // check if distance should separate the legs
   const Vector2 shoulder = leg.pts[0];
   const Vector2 targetShoulder = leg.targetLeg->pts[0];
-  if ((shoulder - targetShoulder).length() > 500) {
+  if ((shoulder - targetShoulder).length() > 800) {
     leg.targetLeg->targetLeg = nullptr;
     leg.targetLeg = nullptr;
+    sound.play(audio::Sound::CLAP3);
     return false;
   }
   // stir respective hands toward target shoulder
@@ -175,14 +177,14 @@ void BallMenController::setupClap() {
 void BallMenController::playClap() {
   // play sound
   if (numUpdateSinceLastClap > 5) {
-    float rdm = utils::random(1.f);
-    if (rdm > 0.5) {
-      sound.play(audio::Sound::CLAP1);
-      // } else if (rdm > 0.3) {
-      // sound.play(audio::Sound::CLAP2);
-    } else {
-      sound.play(audio::Sound::CLAP2);
-    }
+    // float rdm = utils::random(1.f);
+    // if (rdm > 0.5) {
+    sound.play(audio::Sound::CLAP2);
+    // } else if (rdm > 0.3) {
+    // sound.play(audio::Sound::CLAP2);
+    //} else {
+
+    //}
     numUpdateSinceLastClap = 0;
   }
 }

@@ -106,17 +106,17 @@ void BallDetector::process(const cv::Mat &frame, bool bDebug) {
     }
 
     // approximate the contour
-    // float epsilon = 0.003 * cv::arcLength(contours[i], true);
-    // PointVec approxContour;
-    // cv::approxPolyDP(contours[i], approxContour, epsilon, true);
+    float epsilon = 0.003 * cv::arcLength(contours[i], true);
+    PointVec approxContour;
+    cv::approxPolyDP(contours[i], approxContour, epsilon, true);
     //
-    // // create blob from approx contour
+    // create blob from approx contour
     DetectedCircle::Blob blob;
-    // for (size_t j = 0; j < approxContour.size(); j++) {
-    //   const float x = approxContour[j].x - center.x;
-    //   const float y = approxContour[j].y - center.y;
-    //   blob.push_back({-x / rescale, y / rescale});
-    // }
+    for (size_t j = 0; j < approxContour.size(); j++) {
+      const float x = approxContour[j].x - center.x;
+      const float y = approxContour[j].y - center.y;
+      blob.push_back({-x / rescale, y / rescale});
+    }
 
     float cx = center.x - resizedFrame.cols * 0.5;
     float cy = center.y - resizedFrame.rows * 0.5;
